@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
-namespace GameName1
+namespace TTGGame
 {
     /// <summary>
     /// This is the main type for your game
