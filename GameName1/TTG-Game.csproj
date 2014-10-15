@@ -8,8 +8,8 @@
     <ProjectGuid>{5885F971-9DD1-4BDA-B37D-DF7DFF258720}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GameName1</RootNamespace>
-    <AssemblyName>GameName1</AssemblyName>
+    <RootNamespace>TTGGame</RootNamespace>
+    <AssemblyName>TTG-Game</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
