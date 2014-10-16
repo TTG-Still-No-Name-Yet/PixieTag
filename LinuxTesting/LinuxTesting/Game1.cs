@@ -18,7 +18,38 @@ namespace LinuxTesting
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Texture2D background;
+        // Image allocations - Matthew
+        private Texture2D sprite;
+        private Texture2D StartButton;
+        private Texture2D PauseButton;
+        private Texture2D ExitButton;
+        private Texture2D ResumeButton;
+        private Texture2D LoadingScreen;
+
+       // POS Allocation - Matthew
+        private Vector2 StartButtonPOS;
+        private Vector2 ResumeButtonPOS;
+        private Vector2 SpritePOS;
+        private Vector2 ExitButtonPOS;
+
+        //Sprite Stuff - Matthew
+        private const float SpriteWidth = 50f;
+        private const float SpriteHeight = 50f;
+        private float speed = 1.5f;
+
+        //private Thread backgroundThread;
+        private bool isLoading = false;
+        MouseState mouseState;
+        MouseState previousMouseState;
+
+        //Game state
+        enum GameState
+        {
+            StartMenu,
+            Loading,
+            Playing,
+            Paused
+        }
 
         public Game1()
             : base()
@@ -37,7 +68,12 @@ namespace LinuxTesting
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            
+            //Draw mouse
+            IsMouseVisible = true;
 
+            LoadGame();
+            
             base.Initialize();
         }
 
@@ -50,7 +86,6 @@ namespace LinuxTesting
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
-            background = Content.Load<Texture2D>("Images/Image1");
         }
 
         /// <summary>
@@ -81,20 +116,25 @@ namespace LinuxTesting
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        
         protected override void Draw(GameTime gameTime)
         {
-            //Draw mouse
-            IsMouseVisible = true;
-            
-            // Draws the box from an image but there is still no cursor
-            spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.White);
-            spriteBatch.End();
-            //GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+
+            // Draw the sprite - Matthew
+            spriteBatch.Draw(sprite, SpritePOS, Color.White);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
+        void LoadGame()
+        {
+            sprite = Content.Load<Texture2D>("Images/Orb");
+            SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
+        }
+
     }
 }
