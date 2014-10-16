@@ -183,10 +183,15 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(LoadingScreen, new Vector2((GraphicsDevice.Viewport.Width / 2) - (LoadingScreen.Width / 2), (GraphicsDevice.Viewport.Height / 2) - (LoadingScreen.Height / 2)), Color.YellowGreen);
             }
-            
+
             if (gameStates == GameStates.Playing)
             {
                 spriteBatch.Draw(sprite, SpritePOS, Color.White);
+                spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
+            }
+            if (gameStates == GameStates.Paused)
+            {
+                spriteBatch.Draw(ResumeButton, ResumeButtonPOS, Color.White);
             }
             spriteBatch.End();
 
@@ -195,6 +200,9 @@ namespace LinuxTesting
         void LoadGame()
         {
             sprite = Content.Load<Texture2D>("Images/Orb");
+            PauseButton = Content.Load<Texture2D>("Images/pause");
+            ResumeButton = Content.Load<Texture2D>("Images/resume");
+            ResumeButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (ResumeButton.Width / 2), (GraphicsDevice.Viewport.Height / 2) - (ResumeButton.Height / 2));
             SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
 
             // Why not yolo
@@ -221,8 +229,25 @@ namespace LinuxTesting
                 {
                     Exit();
                 }
-
-            }
+               //Pause button
+                if (gameStates == GameStates.Playing)
+                {
+                    Rectangle PauseButtonRect = new Rectangle(0, 0, 70, 70);
+                    if (mouseClickRect.Intersects(PauseButtonRect))
+                    {
+                        gameStates = GameStates.Paused;
+                    }
+                }
+                //Resume Button
+                if (gameStates == GameStates.Paused)
+                {
+                    Rectangle ResumeButtonRect = new Rectangle((int)ResumeButtonPOS.X, (int)ResumeButtonPOS.Y, 100, 20);
+                    if(mouseClickRect.Intersects(ResumeButtonRect))
+                    {
+                        gameStates = GameStates.Playing;
+                    }
+                }
         }
+    }
     }
 }
