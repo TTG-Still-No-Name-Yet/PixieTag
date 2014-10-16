@@ -158,6 +158,7 @@ $RECYCLE.BIN/
 # LaTeX output files
 *.aux
 *.log
+*.toc
 
 # Emacs back-up files
 *~
