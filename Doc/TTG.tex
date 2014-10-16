@@ -2,6 +2,19 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{booktabs}
+
+% Used for the \lgth command
+\usepackage{etoolbox, xparse}
+
+% Use this (\lgth) to typeset time for the Mistakes table
+\def\lgthname{Duration}
+\DeclareDocumentCommand \lgth%
+{ >{\SplitArgument {1}{:}} m }
+{\lgthaux#1}
+\NewDocumentCommand{\lgthaux}{mm}
+{\ifblank{#1}{0}{#1}\,:\,\IfNoValueTF{#2}{00}{#2}}
+
 
 \title{TTG Team - Still No Name Yet: (Insert Undecided Game Name Here)}
 \author{
@@ -18,6 +31,16 @@
   \texttt{Richard.Smith@2014.hull.ac.uk}
 }
 
+
 \begin{document}
 \maketitle
+
+\section{Tips \& Mistakes When Using C\#}
+
+\begin{tabular}{ l p{3cm} p{6cm} c }
+Name & Mistake & Solution & Time Taken to Resolve\\
+\toprule
+Matt & Incorrecty nested \texttt{if} statements & Think about the ordered sequence of your program (because Rob Miles reminded us) & \lgth{2: 00}\\
+\bottomrule
+\end{tabular}
 \end{document}
