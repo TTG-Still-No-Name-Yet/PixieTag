@@ -18,7 +18,7 @@ namespace LinuxTesting
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
         // Image allocations - Matthew
         private Texture2D sprite;
         private Texture2D StartButton;
@@ -27,7 +27,7 @@ namespace LinuxTesting
         private Texture2D ResumeButton;
         private Texture2D LoadingScreen;
 
-       // POS Allocation - Matthew
+        // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
         private Vector2 ResumeButtonPOS;
         private Vector2 SpritePOS;
@@ -36,12 +36,12 @@ namespace LinuxTesting
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
         private const float SpriteHeight = 50f;
-        private float speed = 1.5f;
+        private float speed = 12f;
 
         //private Thread backgroundThread;
         private GameStates gameStates;
         private bool isLoading = false;
-        
+
         MouseState mouseState;
         MouseState previousMouseState;
 
@@ -59,7 +59,7 @@ namespace LinuxTesting
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
+
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace LinuxTesting
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+
             //Draw mouse
             IsMouseVisible = true;
 
@@ -81,7 +81,10 @@ namespace LinuxTesting
             gameStates = GameStates.StartMenu;
 
             //LoadGame();
-            
+            // Hai Mouse :3
+            mouseState = Mouse.GetState();
+            previousMouseState = mouseState;
+
             base.Initialize();
         }
 
@@ -125,6 +128,20 @@ namespace LinuxTesting
             {
                 speed *= -1;
             }
+            mouseState = Mouse.GetState();
+            if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
+            {
+                MouseClicked(mouseState.X, mouseState.Y);
+            }
+
+            previousMouseState = mouseState;
+
+            if (gameStates == GameStates.Playing && isLoading)
+            {
+                LoadGame();
+                isLoading = false;
+            }
+
             base.Update(gameTime);
         }
 
@@ -132,7 +149,7 @@ namespace LinuxTesting
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        
+
         protected override void Draw(GameTime gameTime)
         {
 
@@ -150,7 +167,7 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(sprite, SpritePOS, Color.White);
             }
-            
+
 
             spriteBatch.End();
 
@@ -161,6 +178,26 @@ namespace LinuxTesting
             sprite = Content.Load<Texture2D>("Images/Orb");
             SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
         }
+        void MouseClicked(int x, int y)
+        {
+            //Creates a rectangle around the mouse click - Matthew
+            Rectangle mouseClickRect = new Rectangle(x, y, 10, 10);
 
+            if (gameStates == GameStates.StartMenu)
+            {
+                Rectangle startButtonRect = new Rectangle((int)StartButtonPOS.X, (int)StartButtonPOS.Y, 100, 20);
+                Rectangle exitButtonRect = new Rectangle((int)ExitButtonPOS.X, (int)ExitButtonPOS.Y, 100, 20);
+                if (mouseClickRect.Intersects(startButtonRect))
+                {
+                    gameStates = GameStates.Playing;
+                    isLoading = true;
+                }
+                else if (mouseClickRect.Intersects(exitButtonRect))
+                {
+                    Exit();
+                }
+
+            }
+        }
     }
 }
