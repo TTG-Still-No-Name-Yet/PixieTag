@@ -81,15 +81,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\pause.png">
-      <Name>pause</Name>
+    <Compile Include="Images\123.png">
+      <Name>123</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\resume.png">
-      <Name>resume</Name>
+    <Compile Include="Images\1234.png">
+      <Name>1234</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

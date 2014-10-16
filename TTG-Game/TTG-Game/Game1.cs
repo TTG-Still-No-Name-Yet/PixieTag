@@ -30,6 +30,7 @@ namespace LinuxTesting
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
+        private Vector2 PauseButtonPOS;
         private Vector2 ResumeButtonPOS;
         private Vector2 SpritePOS;
         private Vector2 ExitButtonPOS;
@@ -52,7 +53,7 @@ namespace LinuxTesting
             StartMenu = 0,
             Loading = 1,
             Playing = 2,
-            Paused = 3,
+            Paused
         }
 
         public Game1()
@@ -200,8 +201,8 @@ namespace LinuxTesting
         void LoadGame()
         {
             sprite = Content.Load<Texture2D>("Images/Orb");
-            PauseButton = Content.Load<Texture2D>("Images/pause");
-            ResumeButton = Content.Load<Texture2D>("Images/resume");
+            PauseButton = Content.Load<Texture2D>("Images/123");
+            ResumeButton = Content.Load<Texture2D>("Images/1234");
             ResumeButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (ResumeButton.Width / 2), (GraphicsDevice.Viewport.Height / 2) - (ResumeButton.Height / 2));
             SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
 
@@ -209,7 +210,7 @@ namespace LinuxTesting
             Thread.Sleep(3000);
 
             gameStates = GameStates.Playing;
-            isLoading = true;
+            isLoading = false;
 
         }
         void MouseClicked(int x, int y)
@@ -219,20 +220,23 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.StartMenu)
             {
-                Rectangle startButtonRect = new Rectangle((int)StartButtonPOS.X, (int)StartButtonPOS.Y, 100, 20);
+                Rectangle startButtonRect = new Rectangle((int)StartButtonPOS.X, (int)StartButtonPOS.Y, 100,20);
                 Rectangle exitButtonRect = new Rectangle((int)ExitButtonPOS.X, (int)ExitButtonPOS.Y, 100, 20);
                 if (mouseClickRect.Intersects(startButtonRect))
                 {
                     gameStates = GameStates.Loading;
+                    isLoading = false;
                 }
                 else if (mouseClickRect.Intersects(exitButtonRect))
                 {
                     Exit();
                 }
-               //Pause button
+            }
+                //Pause button
                 if (gameStates == GameStates.Playing)
                 {
-                    Rectangle PauseButtonRect = new Rectangle(0, 0, 70, 70);
+                    Rectangle PauseButtonRect = new Rectangle(0,0,70,70);
+
                     if (mouseClickRect.Intersects(PauseButtonRect))
                     {
                         gameStates = GameStates.Paused;
@@ -242,12 +246,11 @@ namespace LinuxTesting
                 if (gameStates == GameStates.Paused)
                 {
                     Rectangle ResumeButtonRect = new Rectangle((int)ResumeButtonPOS.X, (int)ResumeButtonPOS.Y, 100, 20);
-                    if(mouseClickRect.Intersects(ResumeButtonRect))
+                    if (mouseClickRect.Intersects(ResumeButtonRect))
                     {
                         gameStates = GameStates.Playing;
                     }
                 }
+            }
         }
     }
-    }
-}
