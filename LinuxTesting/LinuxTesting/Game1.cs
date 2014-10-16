@@ -108,7 +108,12 @@ namespace LinuxTesting
                 Exit();
 
             // TODO: Add your update logic here
+            SpritePOS.X += speed;
 
+            if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth) || SpritePOS.X < 0)
+            {
+                speed *= -1;
+            }
             base.Update(gameTime);
         }
 
