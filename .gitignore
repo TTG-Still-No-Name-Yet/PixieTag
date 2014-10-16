@@ -159,6 +159,7 @@ $RECYCLE.BIN/
 *.aux
 *.log
 *.toc
+*.tex.bak
 
 # Emacs back-up files
 *~
