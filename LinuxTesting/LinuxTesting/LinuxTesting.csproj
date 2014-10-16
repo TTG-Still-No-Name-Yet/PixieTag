@@ -69,6 +69,12 @@
   <ItemGroup>
     <Folder Include="Content\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LinuxTestingContent\LinuxTestingContent\LinuxTestingContent.csproj">
+      <Project>{314f67bd-2fd9-4a14-b88b-8a3a23bbb1b7}</Project>
+      <Name>LinuxTestingContent</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

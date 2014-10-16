@@ -18,6 +18,7 @@ namespace LinuxTesting
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Texture2D background;
 
         public Game1()
             : base()
@@ -47,8 +48,8 @@ namespace LinuxTesting
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
+            background = Content.Load<Texture2D>("Images/Image1");
         }
 
         /// <summary>
@@ -81,7 +82,10 @@ namespace LinuxTesting
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.White);
+            spriteBatch.End();
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
 
