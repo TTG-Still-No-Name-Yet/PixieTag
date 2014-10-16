@@ -14,10 +14,11 @@ namespace LinuxTesting
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Game
+    public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        
         // Image allocations - Matthew
         private Texture2D sprite;
         private Texture2D StartButton;
@@ -38,17 +39,19 @@ namespace LinuxTesting
         private float speed = 1.5f;
 
         //private Thread backgroundThread;
+        private GameStates gameStates;
         private bool isLoading = false;
+        
         MouseState mouseState;
         MouseState previousMouseState;
 
         //Game state
-        enum GameState
+        enum GameStates
         {
-            StartMenu,
-            Loading,
-            Playing,
-            Paused
+            StartMenu = 0,
+            Loading = 1,
+            Playing = 2,
+            Paused = 3,
         }
 
         public Game1()
@@ -72,7 +75,12 @@ namespace LinuxTesting
             //Draw mouse
             IsMouseVisible = true;
 
-            LoadGame();
+            StartButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 200);
+            ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 250);
+
+            gameStates = GameStates.StartMenu;
+
+            //LoadGame();
             
             base.Initialize();
         }
@@ -86,6 +94,9 @@ namespace LinuxTesting
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
+
+            StartButton = Content.Load<Texture2D>("Images/start");
+            ExitButton = Content.Load<Texture2D>("Images/quit");
         }
 
         /// <summary>
@@ -128,8 +139,18 @@ namespace LinuxTesting
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
-            // Draw the sprite - Matthew
-            spriteBatch.Draw(sprite, SpritePOS, Color.White);
+            // Draw the menu - Matthew
+            if (gameStates == GameStates.StartMenu)
+            {
+                spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
+                spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
+            }
+
+            if (gameStates == GameStates.Playing)
+            {
+                spriteBatch.Draw(sprite, SpritePOS, Color.White);
+            }
+            
 
             spriteBatch.End();
 
