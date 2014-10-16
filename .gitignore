@@ -154,3 +154,10 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# LaTeX output files
+*.aux
+*.log
+
+# Emacs back-up files
+*~
