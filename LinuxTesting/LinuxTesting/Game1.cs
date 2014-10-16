@@ -1,6 +1,7 @@
 ﻿#region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -38,7 +39,7 @@ namespace LinuxTesting
         private const float SpriteHeight = 50f;
         private float speed = 12f;
 
-        //private Thread backgroundThread;
+        private Thread backgroundThread;
         private GameStates gameStates;
         private bool isLoading = false;
 
@@ -100,6 +101,7 @@ namespace LinuxTesting
 
             StartButton = Content.Load<Texture2D>("Images/start");
             ExitButton = Content.Load<Texture2D>("Images/quit");
+            LoadingScreen = Content.Load<Texture2D>("Images/loading");
         }
 
         /// <summary>
@@ -121,12 +123,26 @@ namespace LinuxTesting
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            SpritePOS.X += speed;
-
-            if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth) || SpritePOS.X < 0)
+            // Load
+            if (gameStates == GameStates.Loading && !isLoading)
             {
-                speed *= -1;
+                // Set background thread
+                backgroundThread = new Thread(LoadGame);
+                isLoading = true;
+
+                backgroundThread.Start();
+
+            }
+
+            if (gameStates == GameStates.Playing)
+            {
+                // Realistic Ball Physics... not really
+                SpritePOS.X += speed;
+
+                if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth) || SpritePOS.X < 0)
+                {
+                    speed *= -1;
+                }
             }
             mouseState = Mouse.GetState();
             if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
@@ -163,12 +179,15 @@ namespace LinuxTesting
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
             }
 
+            if (gameStates == GameStates.Loading)
+            {
+                spriteBatch.Draw(LoadingScreen, new Vector2((GraphicsDevice.Viewport.Width / 2) - (LoadingScreen.Width / 2), (GraphicsDevice.Viewport.Height / 2) - (LoadingScreen.Height / 2)), Color.YellowGreen);
+            }
+            
             if (gameStates == GameStates.Playing)
             {
                 spriteBatch.Draw(sprite, SpritePOS, Color.White);
             }
-
-
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -177,6 +196,13 @@ namespace LinuxTesting
         {
             sprite = Content.Load<Texture2D>("Images/Orb");
             SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
+
+            // Why not yolo
+            Thread.Sleep(3000);
+
+            gameStates = GameStates.Playing;
+            isLoading = true;
+
         }
         void MouseClicked(int x, int y)
         {
@@ -189,8 +215,7 @@ namespace LinuxTesting
                 Rectangle exitButtonRect = new Rectangle((int)ExitButtonPOS.X, (int)ExitButtonPOS.Y, 100, 20);
                 if (mouseClickRect.Intersects(startButtonRect))
                 {
-                    gameStates = GameStates.Playing;
-                    isLoading = true;
+                    gameStates = GameStates.Loading;
                 }
                 else if (mouseClickRect.Intersects(exitButtonRect))
                 {
