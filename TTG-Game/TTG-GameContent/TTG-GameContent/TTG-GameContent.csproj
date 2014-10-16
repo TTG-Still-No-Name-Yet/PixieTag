@@ -46,7 +46,7 @@
     <Reference Include="mscorlib" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LinuxTestingContentContent\LinuxTestingContentContent.contentproj">
+    <ProjectReference Include="..\TTG-GameContentContent\TTG-GameContentContent.contentproj">
       <Name>LinuxTestingContentContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
