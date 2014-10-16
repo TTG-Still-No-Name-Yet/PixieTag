@@ -25,6 +25,7 @@ namespace LinuxTesting
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            
         }
 
         /// <summary>
@@ -82,6 +83,10 @@ namespace LinuxTesting
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            //Draw mouse
+            IsMouseVisible = true;
+            
+            // Draws the box from an image but there is still no cursor
             spriteBatch.Begin();
             spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.White);
             spriteBatch.End();
