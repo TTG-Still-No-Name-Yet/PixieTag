@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
@@ -27,10 +28,12 @@ namespace LinuxTesting
         private Texture2D ExitButton;
         private Texture2D ResumeButton;
         private Texture2D LoadingScreen;
+        // Sound allocations
+        private SoundEffect bang;
+
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
-        private Vector2 PauseButtonPOS;
         private Vector2 ResumeButtonPOS;
         private Vector2 SpritePOS;
         private Vector2 ExitButtonPOS;
@@ -39,6 +42,12 @@ namespace LinuxTesting
         private const float SpriteWidth = 50f;
         private const float SpriteHeight = 50f;
         private float speed = 12f;
+        
+        //Life stuff
+        private int Lives = 0;
+        private int LeftArena = 0;
+
+        // Window stuff - Matthew
 
         private Thread backgroundThread;
         private GameStates gameStates;
@@ -50,9 +59,9 @@ namespace LinuxTesting
         //Game state
         enum GameStates
         {
-            StartMenu = 0,
-            Loading = 1,
-            Playing = 2,
+            StartMenu,
+            Loading,
+            Playing,
             Paused
         }
 
@@ -73,7 +82,7 @@ namespace LinuxTesting
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             //Draw mouse
             IsMouseVisible = true;
 
@@ -103,6 +112,8 @@ namespace LinuxTesting
             StartButton = Content.Load<Texture2D>("Images/start");
             ExitButton = Content.Load<Texture2D>("Images/quit");
             LoadingScreen = Content.Load<Texture2D>("Images/loading");
+
+            //bang = Content.Load<SoundEffect>("Sound/bang");
         }
 
         /// <summary>
@@ -123,7 +134,10 @@ namespace LinuxTesting
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            if(Keyboard.GetState().IsKeyDown(Keys.B))
+            {
+                bang.Play();
+            }
             // Load
             if (gameStates == GameStates.Loading && !isLoading)
             {
@@ -135,14 +149,64 @@ namespace LinuxTesting
 
             }
 
+            //Grabbing keyboard state 
+            KeyboardState state = Keyboard.GetState();
+
             if (gameStates == GameStates.Playing)
             {
-                // Realistic Ball Physics... not really
-                SpritePOS.X += speed;
 
-                if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth) || SpritePOS.X < 0)
+                //Realistic Ball Control..nope. 
+
+                if (state.IsKeyDown(Keys.D))
                 {
-                    speed *= -1;
+                    SpritePOS.X += speed;
+                }
+
+                if (state.IsKeyDown(Keys.A))
+                {
+                    SpritePOS.X -= speed;
+                }
+
+                if (state.IsKeyDown(Keys.W))
+                {
+                    SpritePOS.Y -= speed;
+
+                }
+                if (state.IsKeyDown(Keys.S))
+                {
+                    SpritePOS.Y += speed;
+                }
+                // Check for if the ball is out of the arena
+
+                if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth) || SpritePOS.X < 0 || SpritePOS.Y > (GraphicsDevice.Viewport.Height - SpriteHeight) || SpritePOS.Y < 0)
+                { 
+                    Console.WriteLine("You left the area");
+                   
+                    LeftArena = 1;
+                    while (Lives == 3 && LeftArena == 1)
+                    {
+                        Console.WriteLine("You lost a life. You now have 2 lives");
+                        ResetGame();
+                        Lives = 2;
+                        LeftArena = 0;
+                        break;
+                    }
+                    while (Lives == 2 && LeftArena == 1) 
+                    {
+                        Console.WriteLine("MEH 1");
+                        ResetGame();
+                        Lives = 1;
+                        LeftArena = 0;
+                        break;
+                    }
+                    while (Lives == 1 && LeftArena == 1)
+                    {
+                        Lives = 0;
+                        Console.WriteLine("You no longer have any lives");
+                        gameStates = GameStates.StartMenu;
+                        LeftArena = 0;
+                        break;
+                    }
                 }
             }
             mouseState = Mouse.GetState();
@@ -170,7 +234,7 @@ namespace LinuxTesting
         protected override void Draw(GameTime gameTime)
         {
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DeepPink);
             spriteBatch.Begin();
 
             // Draw the menu - Matthew
@@ -194,10 +258,15 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(ResumeButton, ResumeButtonPOS, Color.White);
             }
+            // FPS ~ WARNING THIS CODE SHOULD NOT BE DISTRIBUTED ON LAUNCH - Matthew
+            //float frame_rate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //Console.WriteLine("FPS: " + frame_rate);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+        // Loads the game <3 - Matthew
         void LoadGame()
         {
             sprite = Content.Load<Texture2D>("Images/Orb");
@@ -209,9 +278,15 @@ namespace LinuxTesting
             // Why not yolo
             Thread.Sleep(3000);
 
+            Lives = 3;
+
             gameStates = GameStates.Playing;
             isLoading = false;
 
+        }
+        void ResetGame()
+        {
+            SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
         }
         void MouseClicked(int x, int y)
         {
@@ -220,7 +295,7 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.StartMenu)
             {
-                Rectangle startButtonRect = new Rectangle((int)StartButtonPOS.X, (int)StartButtonPOS.Y, 100,20);
+                Rectangle startButtonRect = new Rectangle((int)StartButtonPOS.X, (int)StartButtonPOS.Y, 100, 20);
                 Rectangle exitButtonRect = new Rectangle((int)ExitButtonPOS.X, (int)ExitButtonPOS.Y, 100, 20);
                 if (mouseClickRect.Intersects(startButtonRect))
                 {
