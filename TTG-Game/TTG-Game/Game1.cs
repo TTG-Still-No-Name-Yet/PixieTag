@@ -50,7 +50,7 @@ namespace LinuxTesting
         
         //Life stuff
         private int Lives = 0;
-        private int LeftArena = 0;
+        private bool LeftArena = false;
 
         // Window stuff - Matthew
 
@@ -187,38 +187,35 @@ namespace LinuxTesting
                 {
                     SpritePOS.Y += speed;
                 }
-                // Check for if the ball is out of the arena
 
+                // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
                 if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth) || SpritePOS.X < 0 || SpritePOS.Y > (GraphicsDevice.Viewport.Height - SpriteHeight) || SpritePOS.Y < 0)
                 { 
-                    Console.WriteLine("You left the area");
-                   
-                    LeftArena = 1;
-                    while (Lives == 3 && LeftArena == 1)
+                    LeftArena = true;
+
+                    while (LeftArena)
                     {
-                        Console.WriteLine("You lost a life. You now have 2 lives");
-                        ResetGame();
-                        Lives = 2;
-                        LeftArena = 0;
-                        break;
-                    }
-                    while (Lives == 2 && LeftArena == 1) 
-                    {
-                        Console.WriteLine("MEH 1");
-                        ResetGame();
-                        Lives = 1;
-                        LeftArena = 0;
-                        break;
-                    }
-                    while (Lives == 1 && LeftArena == 1)
-                    {
-                        Lives = 0;
-                        Console.WriteLine("You no longer have any lives");
-                        gameStates = GameStates.StartMenu;
-                        LeftArena = 0;
-                        break;
+                        if (Lives == 0)
+                        {
+                            Console.WriteLine("You have no lives left.");
+                            gameStates = GameStates.StartMenu;
+                            LeftArena = false;
+                            break;
+                        }
+                        else if ( (Lives > 0) && (Lives <= 2) )
+                        {
+                            Lives--;
+                            Console.WriteLine("You lost a life, you have " + Lives + " lives left");
+                            LeftArena = false;
+                        }
+
+                        if (LeftArena == false)
+                        {
+                            ResetGame();
+                        }
                     }
                 }
+
             }
 
             if (state.IsKeyDown(Keys.F12))
@@ -302,7 +299,7 @@ namespace LinuxTesting
             // Testing load screen don't leave this command in on launch - Matthew
             //Thread.Sleep(3000);
 
-            Lives = 3;
+            Lives = 2;
 
             gameStates = GameStates.Playing;
             isLoading = false;
