@@ -266,7 +266,9 @@ namespace LinuxTesting
 
             base.Draw(gameTime);
         }
-        // Loads the game <3 - Matthew
+        /// <summary>
+        /// This variable creates the game and should only be used when you are loading the core game. Don't use this for anything else.
+        /// </summary>
         void LoadGame()
         {
             sprite = Content.Load<Texture2D>("Images/Orb");
@@ -284,10 +286,18 @@ namespace LinuxTesting
             isLoading = false;
 
         }
+        /// <summary>
+        /// This variable is for resetting the position of the sprite.
+        /// </summary>
         void ResetGame()
         {
             SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
         }
+        /// <summary>
+        /// This variable is for recognising where the mouse is clicking
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         void MouseClicked(int x, int y)
         {
             //Creates a rectangle around the mouse click - Matthew
