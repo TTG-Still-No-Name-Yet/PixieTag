@@ -20,6 +20,7 @@ namespace LinuxTesting
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteBatch GODDAMNIT;
 
         // Image allocations - Matthew
         private Texture2D sprite;
@@ -28,15 +29,19 @@ namespace LinuxTesting
         private Texture2D ExitButton;
         private Texture2D ResumeButton;
         private Texture2D LoadingScreen;
+        private Texture2D FPSOnButton;
+        private Texture2D FPSOffButton;
+
         // Sound allocations
         private SoundEffect bang;
-
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
         private Vector2 ResumeButtonPOS;
         private Vector2 SpritePOS;
         private Vector2 ExitButtonPOS;
+        private Vector2 FpsOnPOS;
+        private Vector2 FpsOffPOS;
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -53,6 +58,9 @@ namespace LinuxTesting
         private GameStates gameStates;
         private bool isLoading = false;
 
+        //Debug stuff - Matthew
+        private SpriteFont font;
+
         MouseState mouseState;
         MouseState previousMouseState;
 
@@ -62,7 +70,8 @@ namespace LinuxTesting
             StartMenu,
             Loading,
             Playing,
-            Paused
+            Paused,
+            Debug
         }
 
         public Game1()
@@ -112,6 +121,8 @@ namespace LinuxTesting
             StartButton = Content.Load<Texture2D>("Images/start");
             ExitButton = Content.Load<Texture2D>("Images/quit");
             LoadingScreen = Content.Load<Texture2D>("Images/loading");
+
+            font = Content.Load<SpriteFont>("Font/SpriteFont1");
 
             //bang = Content.Load<SoundEffect>("Sound/bang");
         }
@@ -206,10 +217,17 @@ namespace LinuxTesting
                 }
 
             }
+
+            if (state.IsKeyDown(Keys.F12))
+            {
+                Debug();
+                Console.WriteLine(gameStates);
+            }
             mouseState = Mouse.GetState();
             if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
             {
                 MouseClicked(mouseState.X, mouseState.Y);
+                MouseClickedv2(mouseState.X, mouseState.Y, gameTime);
             }
 
             previousMouseState = mouseState;
@@ -219,6 +237,9 @@ namespace LinuxTesting
                 LoadGame();
                 isLoading = false;
             }
+
+            float frame_rate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Console.WriteLine(frame_rate);
 
             base.Update(gameTime);
         }
@@ -230,7 +251,6 @@ namespace LinuxTesting
 
         protected override void Draw(GameTime gameTime)
         {
-
             GraphicsDevice.Clear(Color.DeepPink);
             spriteBatch.Begin();
 
@@ -255,12 +275,13 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(ResumeButton, ResumeButtonPOS, Color.White);
             }
-            // FPS ~ WARNING THIS CODE SHOULD NOT BE DISTRIBUTED ON LAUNCH - Matthew
-            //float frame_rate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //Console.WriteLine("FPS: " + frame_rate);
-            
-            spriteBatch.End();
 
+            if (gameStates == GameStates.Debug)
+            {
+                spriteBatch.Draw(FPSOnButton, new Vector2(30,30), Color.White);
+            }
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
         /// <summary>
@@ -273,9 +294,10 @@ namespace LinuxTesting
             ResumeButton = Content.Load<Texture2D>("Images/1234");
             ResumeButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (ResumeButton.Width / 2), (GraphicsDevice.Viewport.Height / 2) - (ResumeButton.Height / 2));
             SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
+            FPSOnButton = Content.Load<Texture2D>("Images/Orb");
 
-            // Why not yolo
-            Thread.Sleep(3000);
+            // Testing load screen don't leave this command in on launch - Matthew
+            //Thread.Sleep(3000);
 
             Lives = 2;
 
@@ -295,6 +317,8 @@ namespace LinuxTesting
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
+        /// 
+
         void MouseClicked(int x, int y)
         {
             //Creates a rectangle around the mouse click - Matthew
@@ -334,5 +358,33 @@ namespace LinuxTesting
                     }
                 }
             }
+        void MouseClickedv2(int x, int y, GameTime gameTime)
+        {
+            Rectangle mouseClickRectv2 = new Rectangle(x, y, 10, 10);
+            Rectangle FpsOnRect = new Rectangle(30, 30, 300, 300);
+            // Fps ON Button
+            if (gameStates == GameStates.Debug)
+            {
+                if (mouseClickRectv2.Intersects(FpsOnRect))
+                {
+                    IHATEYOUROB(gameTime);
+                    base.Draw(gameTime);
+                    base.Update(gameTime);
+                }
+            }
+        }
+        
+        void Debug()
+        {
+            gameStates = GameStates.Debug;
+            FPSOnButton = Content.Load<Texture2D>("Images/Orb");
+        }
+        void IHATEYOUROB(GameTime gameTime)
+        {
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, "FPS :", new Vector2(0, 0), Color.Black);
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
         }
     }
