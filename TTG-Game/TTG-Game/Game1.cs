@@ -186,7 +186,7 @@ namespace LinuxTesting
                     {
                         if (Lives == 0)
                         {
-                            Console.WriteLine("You ahve no lives left.");
+                            Console.WriteLine("You have no lives left.");
                             gameStates = GameStates.StartMenu;
                             LeftArena = false;
                             break;
