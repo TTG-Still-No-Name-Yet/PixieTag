@@ -160,6 +160,10 @@ $RECYCLE.BIN/
 *.log
 *.toc
 *.tex.bak
+# ====================
+# Remove until release
+# ====================
+*.pdf
 
 # Emacs back-up files
 *~
