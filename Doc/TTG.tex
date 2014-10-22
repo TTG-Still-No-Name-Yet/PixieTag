@@ -1,20 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage{booktabs}
-
-% Used for the \lgth command
-\usepackage{etoolbox, xparse}
-
-% Use this (\lgth) to typeset time for the Mistakes table
-\def\lgthname{Duration}
-\DeclareDocumentCommand \lgth%
-{ >{\SplitArgument {1}{:}} m }
-{\lgthaux#1}
-\NewDocumentCommand{\lgthaux}{mm}
-{\ifblank{#1}{0}{#1}\,:\,\IfNoValueTF{#2}{00}{#2}}
-
+% Input preamble from different file so we dont clutter the main one
+\input{preamble}
 
 \title{TTG Team - Still No Name Yet: (Insert Undecided Game Name Here)}
 \author{
@@ -40,6 +27,20 @@
 \section{Instructions for Compilation}
 
 \section{Gameplay Instructions}
+
+\section{Interesting Bits of the Internal Workings}
+
+  \subsection{Life System}
+  The player is to receive 3 lives to play with when the game starts. The \texttt{Lives} variable is initialised in the preamble and in the \texttt{LoadGame} method. The Life functionality is provided in the \texttt{Update} method and is triggered by an \texttt{if} statement when the object is exiting the bounding box or `Arena':
+  \codelistline{192}{192}{\gameonecode}
+
+  We make use of the Boolean \texttt{LeftArena} to make sure that this code is somehow no run without us foreseeing and to enable a simple while loop for the two case scenarios of the amount of lives left:
+  \codelistline{194}{216}{\gameonecode}
+  and to keep evaluating an \texttt{if} to check if we lost a life and reset the game with our \texttt{ResetGame} method:
+  \codelistline{212}{215}{\gameonecode}
+
+    \subsubsection{Bugs}
+    It was found that we actually interpreted the \texttt{Lives} variable in a binary format (0, 1, 2, 3, 4 etc., where we count from zero first) instead of base 10 so when \texttt{Lives} was originally set to the value of $3$, the user was able to have $4$ goes of the game instead. This was simply fixed by initialising \texttt{lives} to $2$ instead since $0$ is counted as a number. We left the algorithm as-is as that's how Mathematics and algorithms should be done.
 
 % Add ideas that we've had here.
 \section{Idea Documentation}

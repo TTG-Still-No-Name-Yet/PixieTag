@@ -1,0 +1,53 @@
+% Input text options
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% For nice table rules
+\usepackage{booktabs}
+
+% Used for the \lgth command
+\usepackage{etoolbox, xparse}
+
+% Use this (\lgth) to typeset time for the Mistakes table                                                                   
+\def\lgthname{Duration}
+\DeclareDocumentCommand \lgth%
+{ >{\SplitArgument {1}{:}} m }
+{\lgthaux#1}
+\NewDocumentCommand{\lgthaux}{mm}
+{\ifblank{#1}{0}{#1}\,:\,\IfNoValueTF{#2}{00}{#2}}
+
+% For inserting code into document
+\usepackage{verbatim}
+\usepackage{algorithm}
+\usepackage{listings}
+% Usage:
+%     Write straight into the document:
+%        \begin{lstlisting}
+%        // Put your code here
+%        \end{lstlisting}
+%    Take input from file:
+%        \lstinputlisting{source_filename.*}
+%        \lstinputlisting[language=python]{source_filename.py}
+%        \lstinputlisting[language=python, firstline=37, lastline=45]{source_filename.py}%       
+\usepackage{xcolor}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{mygray}{gray}{0.92}
+\lstset{ % Setting colours for code listings
+  backgroundcolor=\color{mygray},   % choose the background colour
+  basicstyle=\footnotesize,        % size of fonts used for the code
+  breaklines=true,                 % automatic line breaking only at white space
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  keywordstyle=\color{blue},       % keyword style
+  stringstyle=\color{mymauve},     % string literal style
+}
+
+
+% Add macros
+\newcommand{\gameonecode}{../TTG-Game/TTG-Game/Game1.cs}
+% Code listing
+\newcommand{\codelist}[2]{\lstinputlisting[language=#1]{#2}}
+\newcommand{\codelistline}[3]{\lstinputlisting[language=C++, firstline=#1, lastline=#2]{#3}}
