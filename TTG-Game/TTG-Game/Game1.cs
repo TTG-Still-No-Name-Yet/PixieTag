@@ -63,9 +63,9 @@ namespace LinuxTesting
 
         //Debug stuff - Matthew
         private SpriteFont font;
-        Point frameSize = new Point(32, 39);
-        Point currentFrame = new Point(0, 0);
-        Point sheetSize = new Point(4, 4);
+        Point frameSize = new Point(31, 31);
+        Point currentFrame = new Point(0,0);
+        Point sheetSize = new Point(3, 3);
 
         MouseState mouseState;
         MouseState previousMouseState;
@@ -129,7 +129,7 @@ namespace LinuxTesting
             LoadingScreen = Content.Load<Texture2D>("Images/loading");
 
             font = Content.Load<SpriteFont>("Font/SpriteFont1");
-            Pixie = Content.Load<Texture2D>("Images/sample_2");
+            Pixie = Content.Load<Texture2D>("Images/sample_1");
 
             //bang = Content.Load<SoundEffect>("Sound/bang");
         }
@@ -177,21 +177,47 @@ namespace LinuxTesting
 
                 if (state.IsKeyDown(Keys.D))
                 {
+                    Console.WriteLine("Mew");
+                    //Point currentFrame = new Point(2, 0);
+                    currentFrame.Y = 2;
+                    currentFrame.X++;
+                    if (currentFrame.X >= sheetSize.X)
+                    {
+                        currentFrame.X = 0;
+                    }
                     SpritePOS.X += speed;
                 }
 
                 if (state.IsKeyDown(Keys.A))
                 {
+                    currentFrame.Y = 1;
+                    currentFrame.X++;
+                    if (currentFrame.X >= sheetSize.X)
+                    {
+                        currentFrame.X = 0;
+                    }
                     SpritePOS.X -= speed;
                 }
 
                 if (state.IsKeyDown(Keys.W))
                 {
+                    currentFrame.Y = 3;
+                    currentFrame.X++;
+                    if (currentFrame.X >= sheetSize.X)
+                    {
+                        currentFrame.X = 0;
+                    }
                     SpritePOS.Y -= speed;
 
                 }
                 if (state.IsKeyDown(Keys.S))
                 {
+                    currentFrame.Y = 0;
+                    currentFrame.X++;
+                    if (currentFrame.X >= sheetSize.X)
+                    {
+                        currentFrame.X = 0;
+                    }
                     SpritePOS.Y += speed;
                 }
 
@@ -250,14 +276,14 @@ namespace LinuxTesting
 
             //Pixie Stuff
             
-            ++currentFrame.X;
-            if (currentFrame.X >= sheetSize.X)
-            {
-                currentFrame.X = 0;
-                ++currentFrame.Y;
-                if (currentFrame.Y >= sheetSize.Y)
-                    currentFrame.Y = 0;
-            }
+            //++currentFrame.X;
+            //if (currentFrame.X >= sheetSize.X)
+            //{
+            //    currentFrame.X = 0;
+            //    ++currentFrame.Y;
+            //    if (currentFrame.Y >= sheetSize.Y)
+            //        currentFrame.Y = 0;
+            //}
 
 
             base.Update(gameTime);
@@ -287,7 +313,7 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.Playing)
             {
-                spriteBatch.Draw(sprite, SpritePOS, Color.White);
+                spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
             }
             if (gameStates == GameStates.Paused)
@@ -299,8 +325,8 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(FPSOnButton, new Vector2(30,30), Color.White);
             }
-            
-            spriteBatch.Draw(Pixie, Vector2.Zero, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X,  frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+            //spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             spriteBatch.End();
             base.Draw(gameTime);
