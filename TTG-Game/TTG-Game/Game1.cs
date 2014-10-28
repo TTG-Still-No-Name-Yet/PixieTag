@@ -130,6 +130,7 @@ namespace LinuxTesting
 
             font = Content.Load<SpriteFont>("Font/SpriteFont1");
             Pixie = Content.Load<Texture2D>("Images/sample_1");
+            Life = Content.Load<Texture2D>("Images/life");
 
             //bang = Content.Load<SoundEffect>("Sound/bang");
         }
