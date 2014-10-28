@@ -42,6 +42,7 @@ namespace LinuxTesting
         private Vector2 ExitButtonPOS;
         private Vector2 FpsOnPOS;
         private Vector2 FpsOffPOS;
+        private Vector2 LiveSpritePOS;
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -54,6 +55,7 @@ namespace LinuxTesting
         //Life stuff
         private int Lives = 0;
         private bool LeftArena = false;
+        private Texture2D LivesSprite;
 
         // Window stuff - Matthew
 
@@ -130,7 +132,7 @@ namespace LinuxTesting
 
             font = Content.Load<SpriteFont>("Font/SpriteFont1");
             Pixie = Content.Load<Texture2D>("Images/sample_1");
-            Life = Content.Load<Texture2D>("Images/life");
+            LivesSprite = Content.Load<Texture2D>("Images/life");
 
             //bang = Content.Load<SoundEffect>("Sound/bang");
         }
@@ -178,7 +180,6 @@ namespace LinuxTesting
 
                 if (state.IsKeyDown(Keys.D))
                 {
-                    Console.WriteLine("Mew");
                     //Point currentFrame = new Point(2, 0);
                     currentFrame.Y = 2;
                     currentFrame.X++;
@@ -327,8 +328,9 @@ namespace LinuxTesting
                 spriteBatch.Draw(FPSOnButton, new Vector2(30,30), Color.White);
             }
 
+            LiveSpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50);
             //spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-
+            spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -415,7 +417,7 @@ namespace LinuxTesting
             {
                 if (mouseClickRectv2.Intersects(FpsOnRect))
                 {
-                    IHATEYOUROB(gameTime);
+                    //IHATEYOUROB(gameTime);
                     base.Draw(gameTime);
                     base.Update(gameTime);
                 }
