@@ -43,6 +43,8 @@ namespace LinuxTesting
         private Vector2 FpsOnPOS;
         private Vector2 FpsOffPOS;
         private Vector2 LiveSpritePOS;
+        private Vector2 LiveSprite2POS;
+        private Vector2 LiveSprite3POS;
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -51,11 +53,13 @@ namespace LinuxTesting
 
         //Pixie Sprite
         private Texture2D Pixie;
-        
+
         //Life stuff
         private int Lives = 0;
         private bool LeftArena = false;
         private Texture2D LivesSprite;
+        private Texture2D LivesSprite2;
+        private Texture2D LivesSprite3;
 
         // Window stuff - Matthew
 
@@ -66,7 +70,7 @@ namespace LinuxTesting
         //Debug stuff - Matthew
         private SpriteFont font;
         Point frameSize = new Point(31, 31);
-        Point currentFrame = new Point(0,0);
+        Point currentFrame = new Point(0, 0);
         Point sheetSize = new Point(3, 3);
 
         MouseState mouseState;
@@ -99,7 +103,7 @@ namespace LinuxTesting
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+
             //Draw mouse
             IsMouseVisible = true;
 
@@ -133,6 +137,9 @@ namespace LinuxTesting
             font = Content.Load<SpriteFont>("Font/SpriteFont1");
             Pixie = Content.Load<Texture2D>("Images/sample_1");
             LivesSprite = Content.Load<Texture2D>("Images/life");
+            LivesSprite2 = LivesSprite;
+            LivesSprite3 = LivesSprite;
+
 
             //bang = Content.Load<SoundEffect>("Sound/bang");
         }
@@ -155,7 +162,7 @@ namespace LinuxTesting
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if(Keyboard.GetState().IsKeyDown(Keys.B))
+            if (Keyboard.GetState().IsKeyDown(Keys.B))
             {
                 bang.Play();
             }
@@ -225,7 +232,7 @@ namespace LinuxTesting
 
                 // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
                 if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth) || SpritePOS.X < 0 || SpritePOS.Y > (GraphicsDevice.Viewport.Height - SpriteHeight) || SpritePOS.Y < 0)
-                { 
+                {
                     LeftArena = true;
 
                     while (LeftArena)
@@ -237,7 +244,7 @@ namespace LinuxTesting
                             LeftArena = false;
                             break;
                         }
-                        else if ( (Lives > 0) && (Lives <= 2) )
+                        else if ((Lives > 0) && (Lives <= 2))
                         {
                             Lives--;
                             Console.WriteLine("You lost a life, you have " + Lives + " lives left");
@@ -253,16 +260,10 @@ namespace LinuxTesting
 
             }
 
-            if (state.IsKeyDown(Keys.F12))
-            {
-                Debug();
-                Console.WriteLine(gameStates);
-            }
             mouseState = Mouse.GetState();
             if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
             {
                 MouseClicked(mouseState.X, mouseState.Y);
-                MouseClickedv2(mouseState.X, mouseState.Y, gameTime);
             }
 
             previousMouseState = mouseState;
@@ -273,11 +274,8 @@ namespace LinuxTesting
                 isLoading = false;
             }
 
-            float frame_rate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Console.WriteLine(frame_rate);
-
             //Pixie Stuff
-            
+
             //++currentFrame.X;
             //if (currentFrame.X >= sheetSize.X)
             //{
@@ -317,6 +315,9 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
+                spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
+                spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
+                spriteBatch.Draw(LivesSprite3, LiveSprite3POS, Color.White);
             }
             if (gameStates == GameStates.Paused)
             {
@@ -325,12 +326,13 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.Debug)
             {
-                spriteBatch.Draw(FPSOnButton, new Vector2(30,30), Color.White);
+                spriteBatch.Draw(FPSOnButton, new Vector2(30, 30), Color.White);
             }
 
-            LiveSpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50);
+            LiveSpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 0);
+            LiveSprite2POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 75, 0);
+            LiveSprite3POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 100, 0);
             //spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -339,6 +341,7 @@ namespace LinuxTesting
         /// </summary>
         void LoadGame()
         {
+
             sprite = Content.Load<Texture2D>("Images/Orb");
             PauseButton = Content.Load<Texture2D>("Images/123");
             ResumeButton = Content.Load<Texture2D>("Images/1234");
@@ -388,53 +391,25 @@ namespace LinuxTesting
                     Exit();
                 }
             }
-                //Pause button
-                if (gameStates == GameStates.Playing)
-                {
-                    Rectangle PauseButtonRect = new Rectangle(0,0,70,70);
-
-                    if (mouseClickRect.Intersects(PauseButtonRect))
-                    {
-                        gameStates = GameStates.Paused;
-                    }
-                }
-                //Resume Button
-                if (gameStates == GameStates.Paused)
-                {
-                    Rectangle ResumeButtonRect = new Rectangle((int)ResumeButtonPOS.X, (int)ResumeButtonPOS.Y, 100, 20);
-                    if (mouseClickRect.Intersects(ResumeButtonRect))
-                    {
-                        gameStates = GameStates.Playing;
-                    }
-                }
-            }
-        void MouseClickedv2(int x, int y, GameTime gameTime)
-        {
-            Rectangle mouseClickRectv2 = new Rectangle(x, y, 10, 10);
-            Rectangle FpsOnRect = new Rectangle(30, 30, 300, 300);
-            // Fps ON Button
-            if (gameStates == GameStates.Debug)
+            //Pause button
+            if (gameStates == GameStates.Playing)
             {
-                if (mouseClickRectv2.Intersects(FpsOnRect))
+                Rectangle PauseButtonRect = new Rectangle(0, 0, 70, 70);
+
+                if (mouseClickRect.Intersects(PauseButtonRect))
                 {
-                    //IHATEYOUROB(gameTime);
-                    base.Draw(gameTime);
-                    base.Update(gameTime);
+                    gameStates = GameStates.Paused;
                 }
             }
-        }
-        
-        void Debug()
-        {
-            gameStates = GameStates.Debug;
-            FPSOnButton = Content.Load<Texture2D>("Images/Orb");
-        }
-        void IHATEYOUROB(GameTime gameTime)
-        {
-            spriteBatch.Begin();
-            spriteBatch.DrawString(font, "FPS :", new Vector2(0, 0), Color.Black);
-            spriteBatch.End();
-            base.Draw(gameTime);
-        }
+            //Resume Button
+            if (gameStates == GameStates.Paused)
+            {
+                Rectangle ResumeButtonRect = new Rectangle((int)ResumeButtonPOS.X, (int)ResumeButtonPOS.Y, 100, 20);
+                if (mouseClickRect.Intersects(ResumeButtonRect))
+                {
+                    gameStates = GameStates.Playing;
+                }
+            }
         }
     }
+}
