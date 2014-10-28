@@ -47,6 +47,9 @@ namespace LinuxTesting
         private const float SpriteWidth = 50f;
         private const float SpriteHeight = 50f;
         private float speed = 12f;
+
+        //Pixie Sprite
+        private Texture2D Pixie;
         
         //Life stuff
         private int Lives = 0;
@@ -60,6 +63,9 @@ namespace LinuxTesting
 
         //Debug stuff - Matthew
         private SpriteFont font;
+        Point frameSize = new Point(32, 39);
+        Point currentFrame = new Point(0, 0);
+        Point sheetSize = new Point(4, 4);
 
         MouseState mouseState;
         MouseState previousMouseState;
@@ -123,6 +129,7 @@ namespace LinuxTesting
             LoadingScreen = Content.Load<Texture2D>("Images/loading");
 
             font = Content.Load<SpriteFont>("Font/SpriteFont1");
+            Pixie = Content.Load<Texture2D>("Images/sample_2");
 
             //bang = Content.Load<SoundEffect>("Sound/bang");
         }
@@ -241,6 +248,18 @@ namespace LinuxTesting
             float frame_rate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
             Console.WriteLine(frame_rate);
 
+            //Pixie Stuff
+            
+            ++currentFrame.X;
+            if (currentFrame.X >= sheetSize.X)
+            {
+                currentFrame.X = 0;
+                ++currentFrame.Y;
+                if (currentFrame.Y >= sheetSize.Y)
+                    currentFrame.Y = 0;
+            }
+
+
             base.Update(gameTime);
         }
 
@@ -252,7 +271,7 @@ namespace LinuxTesting
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DeepPink);
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
 
             // Draw the menu - Matthew
             if (gameStates == GameStates.StartMenu)
@@ -280,6 +299,8 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(FPSOnButton, new Vector2(30,30), Color.White);
             }
+            
+            spriteBatch.Draw(Pixie, Vector2.Zero, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X,  frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             spriteBatch.End();
             base.Draw(gameTime);
