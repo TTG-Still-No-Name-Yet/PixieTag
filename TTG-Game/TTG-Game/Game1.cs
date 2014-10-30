@@ -13,6 +13,38 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace LinuxTesting
 {
+    class GameObject
+    {
+        public Texture2D sprite;
+        public Vector2 position;
+        public float rotation;
+        public Vector2 center;
+        public Vector2 velocity;
+        public bool alive;
+
+        public Rectangle rectangle
+        {
+            get
+            {
+                int left = (int)position.X;
+                int width = sprite.Width;
+                int top = (int)position.Y;
+                int height = sprite.Height;
+                return new Rectangle(left, top, width, height);
+            }
+        }
+
+        public GameObject(Texture2D loadedTexture)
+        {
+            rotation = 0.0f;
+            position = Vector2.Zero;
+            sprite = loadedTexture;
+            center = new Vector2(sprite.Width / 2, sprite.Height / 2);
+            velocity = Vector2.Zero;
+            alive = false;
+        }
+    }
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -40,8 +72,6 @@ namespace LinuxTesting
         private Vector2 ResumeButtonPOS;
         private Vector2 SpritePOS;
         private Vector2 ExitButtonPOS;
-        private Vector2 FpsOnPOS;
-        private Vector2 FpsOffPOS;
         private Vector2 LiveSpritePOS;
         private Vector2 LiveSprite2POS;
         private Vector2 LiveSprite3POS;
@@ -49,7 +79,7 @@ namespace LinuxTesting
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
         private const float SpriteHeight = 50f;
-        private float speed = 12f;
+        private float speed = 5f;
 
         //Pixie Sprite
         private Texture2D Pixie;
@@ -75,6 +105,10 @@ namespace LinuxTesting
 
         MouseState mouseState;
         MouseState previousMouseState;
+
+        // Guns stuff - Connor
+        GameObject arm;
+        private SpriteEffects flip = SpriteEffects.None;
 
         //Game state
         enum GameStates
@@ -140,6 +174,9 @@ namespace LinuxTesting
             LivesSprite2 = LivesSprite;
             LivesSprite3 = LivesSprite;
 
+            // Load content for the guns
+            arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
+
 
             //bang = Content.Load<SoundEffect>("Sound/bang");
         }
@@ -160,6 +197,53 @@ namespace LinuxTesting
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState keyboardState;
+            // Gu stufz
+            if (flip == SpriteEffects.FlipHorizontally)
+            {
+                arm.position = new Vector2(arm.position.X + 5, arm.position.Y - 60);
+            }
+            else
+            {
+                arm.position = new Vector2(arm.position.X - 5, arm.position.Y + 60);
+            }
+            //Arm rotation
+            arm.rotation = (float)Math.Atan2(mouseState.Y, mouseState.X);
+
+            if (flip == SpriteEffects.FlipHorizontally) //Facing right
+            {
+                //If we try to aim behind our head then flip the
+                //character around so he doesn't break his arm!
+                if (arm.rotation < 0)
+                {
+                    flip = SpriteEffects.None;
+                }
+
+                //If we aren't rotating our arm then set it to the
+                //default position. Aiming in front of us.
+                if (arm.rotation == 0 && Math.Abs(mouseState.Y < 0.5f)
+                {
+                    arm.rotation = MathHelper.PiOver2;
+                }
+            }
+            else //Facing left
+            {
+                //Once again, if we try to aim behind us then
+                //flip our character.
+                if (arm.rotation > 0)
+                {
+                    flip = SpriteEffects.FlipHorizontally;
+                }
+
+                //If we're not rotating our arm, default it to
+                //aim the same direction we're facing.
+                if (arm.rotation == 0 && Math.Abs(gamePadState.ThumbSticks.Right.Length()) < 0.5f)
+                {
+                    arm.rotation = -MathHelper.PiOver2;
+                }
+            }
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.B))
