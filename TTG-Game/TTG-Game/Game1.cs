@@ -184,7 +184,7 @@ namespace LinuxTesting
             LivesSprite3 = LivesSprite;
 
             // Load content for the guns
-            arm = new GameObject(Content.Load<Texture2D>("Images/Orb"));
+            arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
 
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
@@ -220,7 +220,7 @@ namespace LinuxTesting
             }
             else
             {
-                arm.position = new Vector2(arm.position.X, arm.position.Y);
+                arm.position = new Vector2(mouseState.Y, mouseState.X);
             }
             //Arm rotation
             arm.rotation = (float)Math.Atan2(mouseState.Y, mouseState.X);
