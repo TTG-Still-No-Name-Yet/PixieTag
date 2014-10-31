@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
@@ -45,6 +46,7 @@ namespace LinuxTesting
         }
     }
 
+    
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -67,7 +69,11 @@ namespace LinuxTesting
         // Sound allocations
         private SoundEffect bang;
         private SoundEffect lifelost;
-        private SoundEffect menumusic;
+        
+        //SoundEffect Instances
+        SoundEffect menumusic;
+        public SoundEffectInstance menumusicInstance;
+       
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -122,7 +128,7 @@ namespace LinuxTesting
             Debug
         }
         
-
+       
 
         public Game1()
             : base()
@@ -147,7 +153,6 @@ namespace LinuxTesting
 
             StartButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 200);
             ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 250);
-
             gameStates = GameStates.StartMenu;
 
             //LoadGame();
@@ -184,6 +189,9 @@ namespace LinuxTesting
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
             menumusic = Content.Load<SoundEffect>("Sound/menumusic");
+            menumusicInstance = menumusic.CreateInstance();
+
+            
         }
 
         /// <summary>
@@ -390,10 +398,15 @@ namespace LinuxTesting
             // Draw the menu - Matthew
             if (gameStates == GameStates.StartMenu)
             {
+                if (menumusicInstance.State == SoundState.Stopped)
+                {
+                    menumusicInstance.Play();
+                }
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
+
                 
-                menumusic.Play();
+
                 
             }
 
