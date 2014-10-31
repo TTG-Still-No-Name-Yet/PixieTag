@@ -66,6 +66,8 @@ namespace LinuxTesting
 
         // Sound allocations
         private SoundEffect bang;
+        private SoundEffect lifelost;
+        private SoundEffect menumusic;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -119,6 +121,8 @@ namespace LinuxTesting
             Paused,
             Debug
         }
+        
+
 
         public Game1()
             : base()
@@ -178,7 +182,8 @@ namespace LinuxTesting
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
 
 
-            //bang = Content.Load<SoundEffect>("Sound/bang");
+            lifelost = Content.Load<SoundEffect>("Sound/lifelost");
+            menumusic = Content.Load<SoundEffect>("Sound/menumusic");
         }
 
         /// <summary>
@@ -221,7 +226,7 @@ namespace LinuxTesting
 
                 //If we aren't rotating our arm then set it to the
                 //default position. Aiming in front of us.
-                if (arm.rotation == 0 && Math.Abs(mouseState.Y < 0.5f)
+                if (arm.rotation == 0 && Math.Abs(mouseState.Y) < 0.5f)
                 {
                     arm.rotation = MathHelper.PiOver2;
                 }
@@ -237,19 +242,15 @@ namespace LinuxTesting
 
                 //If we're not rotating our arm, default it to
                 //aim the same direction we're facing.
-                if (arm.rotation == 0 && Math.Abs(gamePadState.ThumbSticks.Right.Length()) < 0.5f)
-                {
-                    arm.rotation = -MathHelper.PiOver2;
-                }
+                //if (arm.rotation == 0 && Math.Abs(gamePadState.ThumbSticks.Right.Length()) < 0.5f)
+                //{
+                //    arm.rotation = -MathHelper.PiOver2;
+                //}
             }
 
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.B))
-            {
-                bang.Play();
-            }
             // Load
             if (gameStates == GameStates.Loading && !isLoading)
             {
@@ -323,6 +324,7 @@ namespace LinuxTesting
                     {
                         if (Lives == 0)
                         {
+                            lifelost.Play();
                             Console.WriteLine("You have no lives left.");
                             gameStates = GameStates.StartMenu;
                             LeftArena = false;
@@ -331,6 +333,8 @@ namespace LinuxTesting
                         else if ((Lives > 0) && (Lives <= 2))
                         {
                             Lives--;
+                            lifelost.Play();
+                            
                             Console.WriteLine("You lost a life, you have " + Lives + " lives left");
                             LeftArena = false;
                         }
@@ -388,6 +392,9 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
+                
+                menumusic.Play();
+                
             }
 
             if (gameStates == GameStates.Loading)
