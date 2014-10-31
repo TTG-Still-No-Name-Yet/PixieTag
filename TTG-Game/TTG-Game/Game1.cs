@@ -63,7 +63,7 @@ namespace LinuxTesting
         private Texture2D LoadingScreen;
         private Texture2D FPSOnButton;
         private Texture2D FPSOffButton;
-        private Texture2D background;
+        private Texture2D background3;
 
         // Sound allocations
         private SoundEffect bang;
@@ -193,7 +193,7 @@ namespace LinuxTesting
             menumusicInstance = menumusic.CreateInstance();
 
 
-            background = Content.Load<Texture2D>("Images/background");
+            background3 = Content.Load<Texture2D>("Images/background3");
         }
 
         /// <summary>
@@ -397,7 +397,7 @@ namespace LinuxTesting
             //GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             //Draw the background
-            spriteBatch.Draw(background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
+            spriteBatch.Draw(background3,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
             // Draw the menu - Matthew
            
             if (gameStates == GameStates.StartMenu)
