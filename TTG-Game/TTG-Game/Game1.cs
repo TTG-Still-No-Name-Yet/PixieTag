@@ -146,8 +146,8 @@ namespace LinuxTesting
             //Draw mouse
             IsMouseVisible = true;
 
-            StartButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 200);
-            ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 250);
+            StartButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 400);
+            ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 450);
 
             gameStates = GameStates.StartMenu;
 
@@ -409,9 +409,20 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
-                spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
-                spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
-                spriteBatch.Draw(LivesSprite3, LiveSprite3POS, Color.White);
+                if (Lives == 2)
+                {
+                    spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
+                    spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
+                    spriteBatch.Draw(LivesSprite3, LiveSprite3POS, Color.White);
+                }
+                else if (Lives == 1)
+                {
+                    spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
+                    spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
+                }
+                else
+                    spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
+
             }
             if (gameStates == GameStates.Paused)
             {
@@ -423,9 +434,9 @@ namespace LinuxTesting
                 spriteBatch.Draw(FPSOnButton, new Vector2(30, 30), Color.White);
             }
 
-            LiveSpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 0);
-            LiveSprite2POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 75, 0);
-            LiveSprite3POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 100, 0);
+            LiveSpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -40, 0);
+            LiveSprite2POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 35, 0);
+            LiveSprite3POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 110, 0);
             //spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
             base.Draw(gameTime);
