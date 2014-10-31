@@ -68,10 +68,13 @@ namespace LinuxTesting
         // Sound allocations
         private SoundEffect bang;
         private SoundEffect lifelost;
+        
 
         // Sound Instance
         SoundEffect menumusic;
         SoundEffectInstance menumusicInstance;
+        SoundEffect gameplaymusic;
+        SoundEffectInstance gameplaymusicInstance;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -192,6 +195,8 @@ namespace LinuxTesting
             menumusic = Content.Load<SoundEffect>("Sound/menumusic");
             menumusicInstance = menumusic.CreateInstance();
 
+            gameplaymusic = Content.Load<SoundEffect>("Sound/gameplaymusic");
+            gameplaymusicInstance = gameplaymusic.CreateInstance();
 
             background = Content.Load<Texture2D>("Images/background");
         }
@@ -336,6 +341,8 @@ namespace LinuxTesting
                         {
                             lifelost.Play();
                             Console.WriteLine("You have no lives left.");
+                            gameplaymusicInstance.Stop();
+                            Thread.Sleep(2000);
                             gameStates = GameStates.StartMenu;
                             LeftArena = false;
                             break;
@@ -402,10 +409,10 @@ namespace LinuxTesting
            
             if (gameStates == GameStates.StartMenu)
             {
-
                 if (menumusicInstance.State == SoundState.Stopped)
                 {
                     menumusicInstance.Play();
+                    gameplaymusicInstance.Stop();
                 }
 
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
@@ -423,6 +430,10 @@ namespace LinuxTesting
                 if (menumusicInstance.State == SoundState.Playing)
                 {
                     menumusicInstance.Stop();
+                }
+                if (gameplaymusicInstance.State == SoundState.Stopped)
+                { 
+                    gameplaymusicInstance.Play();
                 }
                 spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
