@@ -184,7 +184,7 @@ namespace LinuxTesting
             LivesSprite3 = LivesSprite;
 
             // Load content for the guns
-            arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
+            arm = new GameObject(Content.Load<Texture2D>("Images/Orb"));
 
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
@@ -216,11 +216,11 @@ namespace LinuxTesting
             // Gu stufz
             if (flip == SpriteEffects.FlipHorizontally)
             {
-                arm.position = new Vector2(arm.position.X + 5, arm.position.Y - 60);
+                arm.position = new Vector2(mouseState.Y, mouseState.X);
             }
             else
             {
-                arm.position = new Vector2(arm.position.X - 5, arm.position.Y + 60);
+                arm.position = new Vector2(arm.position.X, arm.position.Y);
             }
             //Arm rotation
             arm.rotation = (float)Math.Atan2(mouseState.Y, mouseState.X);
@@ -420,6 +420,12 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.Playing)
             {
+                // Gun stuffz
+                if (LeftArena == false)
+                {
+                    spriteBatch.Draw(arm.sprite, arm.position, null, Color.White, arm.rotation, arm.center, 1.0f, flip, 0);
+                }
+
                 spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
                 if (Lives == 2)
