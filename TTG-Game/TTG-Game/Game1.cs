@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
@@ -46,7 +45,6 @@ namespace LinuxTesting
         }
     }
 
-    
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -65,15 +63,12 @@ namespace LinuxTesting
         private Texture2D LoadingScreen;
         private Texture2D FPSOnButton;
         private Texture2D FPSOffButton;
+        private Texture2D background;
 
         // Sound allocations
         private SoundEffect bang;
         private SoundEffect lifelost;
-        
-        //SoundEffect Instances
-        SoundEffect menumusic;
-        public SoundEffectInstance menumusicInstance;
-       
+        private SoundEffect menumusic;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -128,7 +123,7 @@ namespace LinuxTesting
             Debug
         }
         
-       
+
 
         public Game1()
             : base()
@@ -153,6 +148,7 @@ namespace LinuxTesting
 
             StartButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 200);
             ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 250);
+
             gameStates = GameStates.StartMenu;
 
             //LoadGame();
@@ -189,9 +185,7 @@ namespace LinuxTesting
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
             menumusic = Content.Load<SoundEffect>("Sound/menumusic");
-            menumusicInstance = menumusic.CreateInstance();
-
-            
+            background = Content.Load<Texture2D>("Images/background");
         }
 
         /// <summary>
@@ -324,7 +318,7 @@ namespace LinuxTesting
                 }
 
                 // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
-                if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth) || SpritePOS.X < 0 || SpritePOS.Y > (GraphicsDevice.Viewport.Height - SpriteHeight) || SpritePOS.Y < 0)
+                if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS.X < 40 || SpritePOS.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS.Y < 40)
                 {
                     LeftArena = true;
 
@@ -392,22 +386,18 @@ namespace LinuxTesting
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DeepPink);
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
-
+            //GraphicsDevice.Clear(Color.White);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            //Draw the background
+            spriteBatch.Draw(background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
             // Draw the menu - Matthew
+           
             if (gameStates == GameStates.StartMenu)
             {
-                if (menumusicInstance.State == SoundState.Stopped)
-                {
-                    menumusicInstance.Play();
-                }
+
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
-
-                
-
-                
+  
             }
 
             if (gameStates == GameStates.Loading)
