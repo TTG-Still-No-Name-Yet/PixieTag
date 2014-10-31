@@ -67,14 +67,17 @@ namespace LinuxTesting
 
         // Sound allocations
         private SoundEffect bang;
-        private SoundEffect lifelost;
-        
+
+
 
         // Sound Instance
         SoundEffect menumusic;
         SoundEffectInstance menumusicInstance;
         SoundEffect gameplaymusic;
         SoundEffectInstance gameplaymusicInstance;
+        SoundEffect lifelost;
+        SoundEffectInstance lifelostInstance;
+        //gameplaymusicInstance.IsLooped = false;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -114,7 +117,7 @@ namespace LinuxTesting
 
         MouseState mouseState;
         MouseState previousMouseState;
-        
+
 
         // Guns stuff - Connor
         GameObject arm;
@@ -129,7 +132,7 @@ namespace LinuxTesting
             Paused,
             Debug
         }
-        
+
 
 
         public Game1()
@@ -191,6 +194,7 @@ namespace LinuxTesting
 
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
+            lifelostInstance = lifelost.CreateInstance();
 
             menumusic = Content.Load<SoundEffect>("Sound/menumusic");
             menumusicInstance = menumusic.CreateInstance();
@@ -339,21 +343,33 @@ namespace LinuxTesting
                     {
                         if (Lives == 0)
                         {
-                            lifelost.Play();
-                            Console.WriteLine("You have no lives left.");
                             gameplaymusicInstance.Stop();
-                            Thread.Sleep(2000);
+                            lifelostInstance.Play();
+                            Console.WriteLine("You have no lives left.");
+                            Thread.Sleep(1000);
                             gameStates = GameStates.StartMenu;
                             LeftArena = false;
+
+                            
+
+                           
+
                             break;
                         }
                         else if ((Lives > 0) && (Lives <= 2))
                         {
                             Lives--;
-                            lifelost.Play();
-                            
+                           
+                                gameplaymusicInstance.Pause();
+                                lifelostInstance.Play();
+                                Thread.Sleep(1500);
+
+                                gameplaymusicInstance.Resume();
+                                                                                  
+
                             Console.WriteLine("You lost a life, you have " + Lives + " lives left");
                             LeftArena = false;
+
                         }
 
                         if (LeftArena == false)
@@ -404,20 +420,21 @@ namespace LinuxTesting
             //GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             //Draw the background
-            spriteBatch.Draw(background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
+            spriteBatch.Draw(background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             // Draw the menu - Matthew
-           
+
             if (gameStates == GameStates.StartMenu)
             {
                 if (menumusicInstance.State == SoundState.Stopped)
                 {
-                    menumusicInstance.Play();
                     gameplaymusicInstance.Stop();
+                    menumusicInstance.Play();
+                    
                 }
 
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
-  
+
             }
 
             if (gameStates == GameStates.Loading)
@@ -430,11 +447,9 @@ namespace LinuxTesting
                 if (menumusicInstance.State == SoundState.Playing)
                 {
                     menumusicInstance.Stop();
-                }
-                if (gameplaymusicInstance.State == SoundState.Stopped)
-                { 
                     gameplaymusicInstance.Play();
                 }
+                
                 spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
                 if (Lives == 2)
