@@ -420,6 +420,10 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.Playing)
             {
+                if (menumusicInstance.State == SoundState.Playing)
+                {
+                    menumusicInstance.Stop();
+                }
                 spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
                 if (Lives == 2)
