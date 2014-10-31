@@ -68,7 +68,10 @@ namespace LinuxTesting
         // Sound allocations
         private SoundEffect bang;
         private SoundEffect lifelost;
-        private SoundEffect menumusic;
+
+        // Sound Instance
+        SoundEffect menumusic;
+        SoundEffectInstance menumusicInstance;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -108,6 +111,7 @@ namespace LinuxTesting
 
         MouseState mouseState;
         MouseState previousMouseState;
+        
 
         // Guns stuff - Connor
         GameObject arm;
@@ -184,7 +188,11 @@ namespace LinuxTesting
 
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
+
             menumusic = Content.Load<SoundEffect>("Sound/menumusic");
+            menumusicInstance = menumusic.CreateInstance();
+
+
             background = Content.Load<Texture2D>("Images/background");
         }
 
@@ -394,6 +402,11 @@ namespace LinuxTesting
            
             if (gameStates == GameStates.StartMenu)
             {
+
+                if (menumusicInstance.State == SoundState.Stopped)
+                {
+                    menumusicInstance.Play();
+                }
 
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
