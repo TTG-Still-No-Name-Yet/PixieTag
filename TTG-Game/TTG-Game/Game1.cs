@@ -623,7 +623,7 @@ namespace LinuxTesting
                             gameplaymusicInstance.Resume();
 
                             //Lives2--;
-                            lifelost.Play();
+                            //lifelost.Play();
                             
                             Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
                             LeftArena = false;
