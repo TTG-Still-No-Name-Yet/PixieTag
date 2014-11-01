@@ -62,6 +62,7 @@ namespace LinuxTesting
         private Texture2D LoadingScreen;
         private Texture2D FPSOnButton;
         private Texture2D Background;
+        private Texture2D titleLogo;
 
         // Sound Instance
         SoundEffect menumusic;
@@ -95,6 +96,7 @@ namespace LinuxTesting
         private Vector2 Live2Sprite3POS;
         private Vector2 MailPOS;
         private Rectangle Meow;
+        private Vector2 titleLogoPOS;
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -187,6 +189,7 @@ namespace LinuxTesting
 
             StartButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 400);
             ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 450);
+            titleLogoPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -400, 240);
 
             gameStates = GameStates.StartMenu;
 
@@ -225,6 +228,7 @@ namespace LinuxTesting
             GoodWon = Content.Load<Texture2D>("Images/goodwon");
             BadWon = Content.Load<Texture2D>("Images/badwon");
             Mail = Content.Load<Texture2D>("Images/mail");
+            titleLogo = Content.Load<Texture2D>("Images/title");
 
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
@@ -898,6 +902,7 @@ namespace LinuxTesting
 
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
+                spriteBatch.Draw(titleLogo, titleLogoPOS, Color.White);
 
             }
 
