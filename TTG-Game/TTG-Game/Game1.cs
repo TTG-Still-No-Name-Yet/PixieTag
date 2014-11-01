@@ -265,11 +265,11 @@ namespace LinuxTesting
             // Gu stufz
             if (flip == SpriteEffects.FlipHorizontally)
             {
-                arm.position = new Vector2(SpritePOS.X, SpritePOS.Y);//mouseState.X, mouseState.Y);
+                arm.position = new Vector2(SpritePOS1.X, SpritePOS1.Y);//mouseState.X, mouseState.Y);
             }
             else
             {
-                arm.position = new Vector2(SpritePOS.X, SpritePOS.Y);//mouseState.X, mouseState.Y);
+                arm.position = new Vector2(SpritePOS1.X, SpritePOS1.Y);//mouseState.X, mouseState.Y);
             }
 
             if (flip == SpriteEffects.FlipHorizontally) //Facing right
@@ -375,9 +375,7 @@ namespace LinuxTesting
                     }
                     SpritePOS1.Y += speed;
                 }
-<<<<<<< HEAD
                 if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
-=======
                 if (state.IsKeyDown(Keys.LeftShift))
                 {
                     firesound1Instance.Play();
@@ -388,8 +386,7 @@ namespace LinuxTesting
                 }
 
                 // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
-                if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS.X < 40 || SpritePOS.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS.Y < 40)
->>>>>>> master
+                if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
                 {
                     LeftArena = true;
 
@@ -413,17 +410,13 @@ namespace LinuxTesting
                         else if ((Lives > 0) && (Lives <= 2))
                         {
                             Lives--;
-<<<<<<< HEAD
                             lifelost.Play();
-=======
                            
                                 gameplaymusicInstance.Pause();
                                 lifelostInstance.Play();
                                 Thread.Sleep(1500);
 
                                 gameplaymusicInstance.Resume();
-                                                                                  
->>>>>>> master
 
                             Console.WriteLine("You lost a life, you have " + Lives + " lives left");
                             LeftArena = false;
@@ -561,11 +554,8 @@ namespace LinuxTesting
             //GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             //Draw the background
-<<<<<<< HEAD
             spriteBatch.Draw(Background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
-=======
-            spriteBatch.Draw(background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
->>>>>>> master
+            //spriteBatch.Draw(Background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             // Draw the menu - Matthew
 
             if (gameStates == GameStates.StartMenu)
@@ -589,11 +579,9 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.Playing)
             {
-<<<<<<< HEAD
                 spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(Pixie2, SpritePOS2, new Rectangle(currentFrame2.X * frameSize2.X, currentFrame2.Y * frameSize2.Y, frameSize2.X, frameSize2.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(15, 10), Color.White);
-=======
                 if (menumusicInstance.State == SoundState.Playing)
                 {
                     menumusicInstance.Stop();
@@ -609,9 +597,8 @@ namespace LinuxTesting
                 {
                     spriteBatch.Draw(arm.sprite, arm.position, null, Color.White, arm.rotation, arm.center, 1.0f, flip, 0);
                 }
-                spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
->>>>>>> master
                 if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
