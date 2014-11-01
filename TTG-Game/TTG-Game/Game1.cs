@@ -670,6 +670,13 @@ namespace LinuxTesting
                 spriteBatch.Draw(BadWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
+            else if (gameStates == GameStates.GoodPixieWin)
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(GoodWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.End();
+
+            }
 
             base.Update(gameTime);
         }
@@ -737,8 +744,13 @@ namespace LinuxTesting
 
                         if (Lives2 == 0)
                         {
-                            Thread.Sleep(1000);
-                            gameStates = GameStates.StartMenu;
+                            GoodPixieWin = true;
+                            if (Lives2 == 0 && GoodPixieWin == true)
+                            {
+                                gameStates = GameStates.GoodPixieWin;
+                                gameplaymusicInstance.Stop();
+                                victorypixie1soundInstance.Play();
+                            }
                         }
                     }
                     //}
@@ -801,6 +813,11 @@ namespace LinuxTesting
                         if (Lives == 0)
                         {
                             BadPixieWin = true;
+                        }
+
+                        if (Lives2 == 0)
+                        {
+                            GoodPixieWin = true;
                         }
 
                         if (Lives == 0 && BadPixieWin == true)
