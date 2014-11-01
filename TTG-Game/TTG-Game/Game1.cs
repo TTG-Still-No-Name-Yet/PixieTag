@@ -83,6 +83,10 @@ namespace LinuxTesting
         SoundEffectInstance firesound1Instance;
         SoundEffect firesound2;
         SoundEffectInstance firesound2Instance;
+        SoundEffect victorypixie1sound;
+        SoundEffectInstance victorypixie1soundInstance;
+        SoundEffect victorypixie2sound;
+        SoundEffectInstance victorypixie2soundInstance;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -240,6 +244,15 @@ namespace LinuxTesting
             firesound2Instance = firesound2.CreateInstance();
             firesound2Instance.Volume = 0.8f;
 
+            victorypixie1sound = Content.Load<SoundEffect>("Sound/victorypixie1sound");
+            victorypixie1soundInstance = victorypixie1sound.CreateInstance();
+
+            victorypixie2sound = Content.Load<SoundEffect>("Sound/victorypixie2sound");
+            victorypixie2soundInstance = victorypixie2sound.CreateInstance();
+
+
+
+
 
 
 
@@ -381,11 +394,13 @@ namespace LinuxTesting
                 
                 if (state.IsKeyDown(Keys.RightShift))
                 {
-                    firesound2Instance.Play();
+                    gameplaymusicInstance.Stop();
+                    victorypixie1soundInstance.Play();
                 }
                 if (state.IsKeyDown(Keys.LeftShift))
                 {
-                    firesound1Instance.Play();
+                    gameplaymusicInstance.Stop();
+                    victorypixie2soundInstance.Play();
                 }
 
                 // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
