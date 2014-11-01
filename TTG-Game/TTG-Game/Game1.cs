@@ -21,7 +21,6 @@ namespace LinuxTesting
         public Vector2 center;
         public Vector2 velocity;
         public bool alive;
-
         public Rectangle rectangle
         {
             get
@@ -52,7 +51,7 @@ namespace LinuxTesting
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        SpriteBatch GODDAMNIT;
+        
 
         // Image allocations - Matthew
         private Texture2D sprite;
@@ -62,13 +61,7 @@ namespace LinuxTesting
         private Texture2D ResumeButton;
         private Texture2D LoadingScreen;
         private Texture2D FPSOnButton;
-        private Texture2D FPSOffButton;
         private Texture2D Background;
-
-        // Sound allocations
-        private SoundEffect bang;
-
-
 
         // Sound Instance
         SoundEffect menumusic;
@@ -83,6 +76,10 @@ namespace LinuxTesting
         SoundEffectInstance firesound1Instance;
         SoundEffect firesound2;
         SoundEffectInstance firesound2Instance;
+        SoundEffect victorypixie1sound;
+        SoundEffectInstance victorypixie1soundInstance;
+        SoundEffect victorypixie2sound;
+        SoundEffectInstance victorypixie2soundInstance;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -96,7 +93,12 @@ namespace LinuxTesting
         private Vector2 Live2SpritePOS;
         private Vector2 Live2Sprite2POS;
         private Vector2 Live2Sprite3POS;
+<<<<<<< HEAD
         private Vector2 MailPOS;
+=======
+        private Rectangle Meow;
+
+>>>>>>> master
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -124,6 +126,7 @@ namespace LinuxTesting
         private Texture2D GoodWon;
         private Texture2D BadWon;
 
+
         // Window stuff - Matthew
 
         private Thread backgroundThread;
@@ -136,7 +139,7 @@ namespace LinuxTesting
         Point currentFrame = new Point(0, 0);
         Point sheetSize = new Point(3, 3);
 
-        Point frameSize2 = new Point(34, 40);
+        Point frameSize2 = new Point(34, 39);
         Point currentFrame2 = new Point(0, 0);
         Point sheetSize2 = new Point(3, 3);
 
@@ -146,7 +149,11 @@ namespace LinuxTesting
 
         // Guns stuff - Connor
         GameObject arm;
+        GameObject[] bullets;
+        GameObject arm2;
+        GameObject[] bullets2;
         private SpriteEffects flip = SpriteEffects.None;
+        private SpriteEffects flip2 = SpriteEffects.None;
 
         //Game state
         enum GameStates
@@ -157,8 +164,6 @@ namespace LinuxTesting
             Paused,
             Debug
         }
-
-
 
         public Game1()
             : base()
@@ -177,7 +182,7 @@ namespace LinuxTesting
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             //Draw mouse
             IsMouseVisible = true;
 
@@ -185,6 +190,7 @@ namespace LinuxTesting
             ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 450);
 
             gameStates = GameStates.StartMenu;
+
 
             //LoadGame();
             // Hai Mouse :3
@@ -223,9 +229,19 @@ namespace LinuxTesting
 
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
+            arm2 = new GameObject(Content.Load <Texture2D>("Images/gun"));
+            bullets = new GameObject[1];
+            for (int i = 0; i < 1; i++)
+            {
+                bullets[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
+            }
+            bullets2 = new GameObject[1];
+            for (int i = 0; i < 1; i++ )
+            {
+                bullets2[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
+            }
 
-
-            lifelost = Content.Load<SoundEffect>("Sound/lifelost");
+                lifelost = Content.Load<SoundEffect>("Sound/lifelost");
             lifelostInstance = lifelost.CreateInstance();
             lifelostInstance.Volume = 0.5f;
             menumusic = Content.Load<SoundEffect>("Sound/menumusic");
@@ -243,10 +259,20 @@ namespace LinuxTesting
             firesound1 = Content.Load<SoundEffect>("Sound/firesound1");
             firesound1Instance = firesound1.CreateInstance();
             firesound1Instance.Pitch = 1;
+            
 
             firesound2 = Content.Load<SoundEffect>("Sound/firesound2");
             firesound2Instance = firesound2.CreateInstance();
             firesound2Instance.Volume = 0.8f;
+
+            victorypixie1sound = Content.Load<SoundEffect>("Sound/victorypixie1sound");
+            victorypixie1soundInstance = victorypixie1sound.CreateInstance();
+
+            victorypixie2sound = Content.Load<SoundEffect>("Sound/victorypixie2sound");
+            victorypixie2soundInstance = victorypixie2sound.CreateInstance();
+
+
+
 
 
 
@@ -270,15 +296,15 @@ namespace LinuxTesting
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState keyboardState;
             // Gu stufz
             if (flip == SpriteEffects.FlipHorizontally)
             {
-                arm.position = new Vector2(SpritePOS1.X, SpritePOS1.Y);//mouseState.X, mouseState.Y);
+                arm.position = new Vector2(SpritePOS1.X+35, SpritePOS1.Y+18);//mouseState.X, mouseState.Y);
             }
-            else
+
+            if (flip2 == SpriteEffects.FlipHorizontally)
             {
-                arm.position = new Vector2(SpritePOS1.X, SpritePOS1.Y);//mouseState.X, mouseState.Y);
+                arm2.position = new Vector2(SpritePOS2.X, SpritePOS2.Y);
             }
 
             if (flip == SpriteEffects.FlipHorizontally) //Facing right
@@ -314,6 +340,38 @@ namespace LinuxTesting
                 //}
             }
 
+            if (flip2 == SpriteEffects.FlipHorizontally) //Facing right
+            {
+                //If we try to aim behind our head then flip the
+                //character around so he doesn't break his arm!
+                if (arm2.rotation < 0)
+                {
+                    flip2 = SpriteEffects.None;
+                }
+
+                //If we aren't rotating our arm then set it to the
+                //default position. Aiming in front of us.
+                if (arm2.rotation == 0 && Math.Abs(mouseState.Y) < 0.5f)
+                {
+                    arm2.rotation = MathHelper.PiOver2;
+                }
+            }
+            else //Facing left
+            {
+                //Once again, if we try to aim behind us then
+                //flip our character.
+                if (arm2.rotation > 0)
+                {
+                    flip2 = SpriteEffects.FlipHorizontally;
+                }
+
+                //If we're not rotating our arm, default it to
+                //aim the same direction we're facing.
+                //if (arm.rotation == 0 && Math.Abs(gamePadState.ThumbSticks.Right.Length()) < 0.5f)
+                //{
+                //    arm.rotation = -MathHelper.PiOver2;
+                //}
+            }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -330,6 +388,20 @@ namespace LinuxTesting
 
             //Grabbing keyboard state 
             KeyboardState state = Keyboard.GetState();
+
+            // Gun bullets
+            if (state.IsKeyDown(Keys.LeftShift))
+            {
+                FireBullet();
+                
+            }
+            if (state.IsKeyDown(Keys.RightShift))
+            {
+                FireBullet2();
+            }
+
+            UpdateBullets();
+            UpdateBullets2();
 
             if (gameStates == GameStates.Playing)
             {
@@ -384,14 +456,16 @@ namespace LinuxTesting
                     }
                     SpritePOS1.Y += speed;
                 }
-                if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
-                if (state.IsKeyDown(Keys.LeftShift))
-                {
-                    firesound1Instance.Play();
-                }
+                //if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
+
+                
                 if (state.IsKeyDown(Keys.RightShift))
                 {
-                    firesound2Instance.Play();
+                    victorypixie1soundInstance.Play();
+                }
+                if (state.IsKeyDown(Keys.LeftShift))
+                {                  
+                    victorypixie2soundInstance.Play();
                 }
 
                 // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
@@ -419,7 +493,7 @@ namespace LinuxTesting
                         else if ((Lives > 0) && (Lives <= 2))
                         {
                             Lives--;
-                            lifelost.Play();
+                            lifelostInstance.Play();
                            
                                 gameplaymusicInstance.Pause();
                                 lifelostInstance.Play();
@@ -447,6 +521,7 @@ namespace LinuxTesting
                     //Point currentFrame = new Point(2, 0);
                     currentFrame2.Y = 2;
                     currentFrame2.X++;
+                    arm2.rotation = 1.55f;
                     if (currentFrame2.X >= sheetSize2.X)
                     {
                         currentFrame2.X = 0;
@@ -458,6 +533,7 @@ namespace LinuxTesting
                 {
                     currentFrame2.Y = 1;
                     currentFrame2.X++;
+                    arm2.rotation = 4.7f;
                     if (currentFrame2.X >= sheetSize2.X)
                     {
                         currentFrame2.X = 0;
@@ -469,6 +545,7 @@ namespace LinuxTesting
                 {
                     currentFrame2.Y = 3;
                     currentFrame2.X++;
+                    arm2.rotation = 0f;
                     if (currentFrame2.X >= sheetSize2.X)
                     {
                         currentFrame2.X = 0;
@@ -480,6 +557,7 @@ namespace LinuxTesting
                 {
                     currentFrame2.Y = 0;
                     currentFrame2.X++;
+                    arm2.rotation = 3.1f;
                     if (currentFrame2.X >= sheetSize2.X)
                     {
                         currentFrame2.X = 0;
@@ -499,17 +577,28 @@ namespace LinuxTesting
                     {
                         if (Lives2 == 0)
                         {
-                            lifelost.Play();
+                            gameplaymusicInstance.Stop();
+                            lifelostInstance.Play();
                             Console.WriteLine("You have no lives left.");
+                            Thread.Sleep(1600);
                             gameStates = GameStates.StartMenu;
                             LeftArena = false;
                             break;
                         }
                         else if ((Lives2 > 0) && (Lives2 <= 2))
                         {
+<<<<<<< HEAD
                             Lives2--;
+                            gameplaymusicInstance.Pause();
+                            lifelostInstance.Play();                            
+                            Thread.Sleep(1500);
+                            gameplaymusicInstance.Resume();
+
+=======
+                            //Lives2--;
                             lifelost.Play();
                             
+>>>>>>> master
                             Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
                             LeftArena = false;
                         }
@@ -522,6 +611,7 @@ namespace LinuxTesting
                 }
 
             }
+
 
             mouseState = Mouse.GetState();
             if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
@@ -549,7 +639,6 @@ namespace LinuxTesting
             //        currentFrame.Y = 0;
             //}
 
-
             base.Update(gameTime);
         }
 
@@ -558,11 +647,189 @@ namespace LinuxTesting
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
 
+
+        private void FireBullet()
+        {
+            foreach (GameObject bullet in bullets)
+            {
+                //Find a bullet that isn't alive
+                if (!bullet.alive)
+                {
+                    //And set it to alive.
+                    bullet.alive = true;
+                    
+                    if (flip == SpriteEffects.FlipHorizontally) //Facing right
+                    {
+                        float armCos = (float)Math.Cos(arm.rotation - MathHelper.PiOver2);
+                        float armSin = (float)Math.Sin(arm.rotation - MathHelper.PiOver2);
+
+                        //Set the initial position of our bullet at the end of our gun arm
+                        //42 is obtained be taking the width of the Arm_Gun texture / 2
+                        //and subtracting the width of the Bullet texture / 2. ((96/2)-(12/2))
+                        bullet.position = new Vector2(
+                            arm.position.X + 42 * armCos,
+                            arm.position.Y + 42 * armSin);
+
+                        //And give it a velocity of the direction we're aiming.
+                        //Increase/decrease speed by changing 15.0f
+                        bullet.velocity = new Vector2(
+                            (float)Math.Cos(arm.rotation - MathHelper.PiOver2),
+                            (float)Math.Sin(arm.rotation - MathHelper.PiOver2)) * 15.0f;
+                    }
+                    else //Facing left
+                    {
+                        float armCos = (float)Math.Cos(arm.rotation + MathHelper.PiOver2);
+                        float armSin = (float)Math.Sin(arm.rotation + MathHelper.PiOver2);
+
+                        //Set the initial position of our bullet at the end of our gun arm
+                        //42 is obtained be taking the width of the Arm_Gun texture / 2
+                        //and subtracting the width of the Bullet texture / 2. ((96/2)-(12/2))
+                        bullet.position = new Vector2(
+                            arm.position.X - 42 * armCos,
+                            arm.position.Y - 42 * armSin);
+
+                        //And give it a velocity of the direction we're aiming.
+                        //Increase/decrease speed by changing 15.0f
+                        bullet.velocity = new Vector2(
+                           -armCos,
+                           -armSin) * 15.0f;
+                    }
+                    Rectangle Pixie2PosRect = new Rectangle((int)SpritePOS2.X, (int)SpritePOS2.Y, 70, 70);
+                    //Rectangle Pixie2PosRect = new Rectangle((int)SpritePOS1.X, (int)SpritePOS1.Y, 20, 20);
+                    if (Pixie2PosRect.Intersects(bullet.rectangle))
+                    {
+                        lifelostInstance.Play();
+                        Lives2--;
+                    }
+                    //}
+                }
+            }
+        }
+
+        private void FireBullet2()
+        {
+            foreach (GameObject bullet2 in bullets2)
+            {
+                //Find a bullet that isn't alive
+                if (!bullet2.alive)
+                {
+                    //And set it to alive.
+                    bullet2.alive = true;
+
+                    if (flip2 == SpriteEffects.FlipHorizontally) //Facing right
+                    {
+                        float armCos2 = (float)Math.Cos(arm2.rotation - MathHelper.PiOver2);
+                        float armSin2 = (float)Math.Sin(arm2.rotation - MathHelper.PiOver2);
+
+                        //Set the initial position of our bullet at the end of our gun arm
+                        //42 is obtained be taking the width of the Arm_Gun texture / 2
+                        //and subtracting the width of the Bullet texture / 2. ((96/2)-(12/2))
+                        bullet2.position = new Vector2(
+                            arm2.position.X + 42 * armCos2,
+                            arm2.position.Y + 42 * armSin2);
+
+                        //And give it a velocity of the direction we're aiming.
+                        //Increase/decrease speed by changing 15.0f
+                        bullet2.velocity = new Vector2(
+                            (float)Math.Cos(arm2.rotation - MathHelper.PiOver2),
+                            (float)Math.Sin(arm2.rotation - MathHelper.PiOver2)) * 15.0f;
+                    }
+                    else //Facing left
+                    {
+                        float armCos2 = (float)Math.Cos(arm2.rotation + MathHelper.PiOver2);
+                        float armSin2 = (float)Math.Sin(arm2.rotation + MathHelper.PiOver2);
+
+                        //Set the initial position of our bullet at the end of our gun arm
+                        //42 is obtained be taking the width of the Arm_Gun texture / 2
+                        //and subtracting the width of the Bullet texture / 2. ((96/2)-(12/2))
+                        bullet2.position = new Vector2(
+                            arm2.position.X - 42 * armCos2,
+                            arm2.position.Y - 42 * armSin2);
+
+                        //And give it a velocity of the direction we're aiming.
+                        //Increase/decrease speed by changing 15.0f
+                        bullet2.velocity = new Vector2(
+                           -armCos2,
+                           -armSin2) * 15.0f;
+                    }
+                    Rectangle Pixie1PosRect = new Rectangle((int)SpritePOS1.X, (int)SpritePOS1.Y, 70, 70);
+                    if (bullet2.rectangle.Intersects(Pixie1PosRect))
+                    {
+                        lifelostInstance.Play();
+                        Lives--;
+                    }
+                }
+            }
+        }
+
+        private void UpdateBullets()
+        {
+            //Check all of our bullets
+            foreach (GameObject bullet in bullets)
+            {
+                //Only update them if they're alive
+                if (bullet.alive)
+                {
+                    //Move our bullet based on it's velocity
+                    bullet.position += bullet.velocity;
+
+                    //Rectangle the size of the screen so bullets that
+                    //fly off screen are deleted.
+                    Rectangle screenRect = new Rectangle(0, 0, 1280, 720);
+                    if (!screenRect.Contains(new Point(
+                        (int)bullet.position.X,
+                        (int)bullet.position.Y)))
+                    {
+                        bullet.alive = false;
+                        continue;
+                    }
+
+                    //Collision rectangle for each bullet -Will also be
+                    //used for collisions with enemies.
+                    Rectangle bulletRect = new Rectangle(
+                        (int)bullet.position.X - bullet.sprite.Width * 2,
+                        (int)bullet.position.Y - bullet.sprite.Height * 2,
+                        20,20);
+                }
+            }
+        }
+
+        private void UpdateBullets2()
+        {
+            //Check all of our bullets
+            foreach (GameObject bullet2 in bullets2)
+            {
+                //Only update them if they're alive
+                if (bullet2.alive)
+                {
+                    //Move our bullet based on it's velocity
+                    bullet2.position += bullet2.velocity;
+
+                    //Rectangle the size of the screen so bullets that
+                    //fly off screen are deleted.
+                    Rectangle screenRect2 = new Rectangle(0, 0, 1280, 720);
+                    if (!screenRect2.Contains(new Point((int)bullet2.position.X,(int)bullet2.position.Y)))
+                    {
+                        bullet2.alive = false;
+                        continue;
+                    }
+
+                    //Collision rectangle for each bullet -Will also be
+                    //used for collisions with enemies.
+                    Rectangle bulletRect2 = new Rectangle(
+                        (int)bullet2.position.X - bullet2.sprite.Width * 2,
+                        (int)bullet2.position.Y - bullet2.sprite.Height * 2,
+                        10,10);
+                }
+            }
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             //Draw the background
+            //spriteBatch.Draw(background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             spriteBatch.Draw(Background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
             //spriteBatch.Draw(Background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             // Draw the menu - Matthew
@@ -606,8 +873,9 @@ namespace LinuxTesting
                 if (LeftArena == false)
                 {
                     spriteBatch.Draw(arm.sprite, arm.position, null, Color.White, arm.rotation, arm.center, 1.0f, flip, 0);
+                    spriteBatch.Draw(arm2.sprite, arm2.position, null, Color.White, arm2.rotation, arm2.center, 1.0f, flip2, 0);
                 }
-                spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                //spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
@@ -654,6 +922,25 @@ namespace LinuxTesting
             Live2SpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -600, 0);
             Live2Sprite2POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -525, 0);
             Live2Sprite3POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -450, 0);
+
+            //Draw the bullets
+            foreach (GameObject bullet in bullets)
+            {
+                if (bullet.alive)
+                {
+                    spriteBatch.Draw(bullet.sprite,
+                        bullet.position, Color.White);
+                }
+            }
+
+            foreach (GameObject bullet2 in bullets2)
+            {
+                if (bullet2.alive)
+                {
+                    spriteBatch.Draw(bullet2.sprite,
+                        bullet2.position, Color.White);
+                }
+            }
             //spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
             base.Draw(gameTime);
