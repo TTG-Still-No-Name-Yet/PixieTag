@@ -200,6 +200,9 @@ namespace LinuxTesting
             mouseState = Mouse.GetState();
             previousMouseState = mouseState;
 
+            this.graphics.PreferredBackBufferHeight = 1920;
+            this.graphics.PreferredBackBufferWidth = 1080;
+            this.graphics.IsFullScreen = true;
             base.Initialize();
         }
 
@@ -472,7 +475,7 @@ namespace LinuxTesting
                     firesound1Instance.Play();
                 }
 
-                //// Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
+                // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
                 //if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
                 //{
                 //   LeftArena = true;
@@ -542,6 +545,41 @@ namespace LinuxTesting
                 //            ResetGame();
                 //        }
                 //}
+
+                if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
+                {
+                    LeftArena = true;
+
+                    while (LeftArena)
+                    {
+                        if (Lives == 0)
+                        {
+                            gameplaymusicInstance.Stop();
+                            lifelostInstance.Play();
+                            Console.WriteLine("You have no lives left.");
+                            Thread.Sleep(1600);
+                            gameStates = GameStates.StartMenu;
+                            LeftArena = false;
+                            break;
+                        }
+                        else if ((Lives > 0) && (Lives <= 2))
+                        {
+                            Lives--;
+                            gameplaymusicInstance.Pause();
+                            lifelostInstance.Play();
+                            Thread.Sleep(1500);
+                            gameplaymusicInstance.Resume();
+
+                            Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
+                            LeftArena = false;
+                        }
+
+                        if (LeftArena == false)
+                        {
+                            ResetGame();
+                        }
+                    }
+                }
 
 
 
@@ -952,13 +990,13 @@ namespace LinuxTesting
                     spriteBatch.Draw(arm2.sprite, arm2.position, null, Color.White, arm2.rotation, arm2.center, 1.0f, flip2, 0);
                 }
                 //spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                if (Lives == 3)
+                if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
                     spriteBatch.Draw(LivesSprite3, LiveSprite3POS, Color.White);
                 }
-                else if (Lives == 2)
+                else if (Lives == 1)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
@@ -966,13 +1004,13 @@ namespace LinuxTesting
                 else
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
 
-                if (Lives2 == 3)
+                if (Lives2 == 2)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
                     spriteBatch.Draw(Lives2Sprite3, Live2Sprite3POS, Color.White);
                 }
-                else if (Lives2 == 2)
+                else if (Lives2 == 1)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
@@ -1035,15 +1073,15 @@ namespace LinuxTesting
             PauseButton = Content.Load<Texture2D>("Images/123");
             ResumeButton = Content.Load<Texture2D>("Images/1234");
             ResumeButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (ResumeButton.Width / 2), (GraphicsDevice.Viewport.Height / 2) - (ResumeButton.Height / 2));
-            SpritePOS1 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
-            SpritePOS2 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
+            SpritePOS1 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2) + 400);
+            SpritePOS2 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2) - 400);
             FPSOnButton = Content.Load<Texture2D>("Images/Orb");
 
             // Testing load screen don't leave this command in on launch - Matthew
             //Thread.Sleep(3000);
 
-            Lives = 3;
-            Lives2 = 3;
+            Lives = 2;
+            Lives2 = 2;
 
             gameStates = GameStates.Playing;
             isLoading = false;
