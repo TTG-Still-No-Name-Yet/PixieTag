@@ -151,11 +151,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\sample_2.png">
-      <Name>sample_2</Name>
+    <None Include="Images\meow">
+      <Name>meow</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Images\life2.png">
@@ -188,6 +188,13 @@
       <Name>firesound2</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\sample_2.png">
+      <Name>sample_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
