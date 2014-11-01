@@ -96,7 +96,7 @@ namespace LinuxTesting
         private Vector2 Live2SpritePOS;
         private Vector2 Live2Sprite2POS;
         private Vector2 Live2Sprite3POS;
-
+        private Vector2 MailPOS;
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -117,6 +117,12 @@ namespace LinuxTesting
         private Texture2D Lives2Sprite;
         private Texture2D Lives2Sprite2;
         private Texture2D Lives2Sprite3;
+        private Texture2D Mail;
+
+
+        //Winning announcer
+        private Texture2D GoodWon;
+        private Texture2D BadWon;
 
         // Window stuff - Matthew
 
@@ -211,6 +217,9 @@ namespace LinuxTesting
             Lives2Sprite = Content.Load<Texture2D>("Images/life2");
             Lives2Sprite2 = Lives2Sprite;
             Lives2Sprite3 = Lives2Sprite;
+            GoodWon = Content.Load<Texture2D>("Images/goodwon");
+            BadWon = Content.Load<Texture2D>("Images/badwon");
+            Mail = Content.Load<Texture2D>("Images/mail");
 
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
@@ -557,7 +566,8 @@ namespace LinuxTesting
             spriteBatch.Draw(Background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
             //spriteBatch.Draw(Background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             // Draw the menu - Matthew
-
+            Rectangle Mail = new Rectangle((int)MailPOS.X, (int)MailPOS.Y, 300, 300);
+            //spriteBatch.Draw(Mail, MailPOS, Color.White);
             if (gameStates == GameStates.StartMenu)
             {
                 if (menumusicInstance.State == SoundState.Stopped)
@@ -612,6 +622,7 @@ namespace LinuxTesting
                 else
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
 
+
                 if (Lives2 == 2)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
@@ -625,6 +636,7 @@ namespace LinuxTesting
                 }
                 else
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
+                
 
             }
             if (gameStates == GameStates.Paused)
@@ -636,7 +648,6 @@ namespace LinuxTesting
             {
                 spriteBatch.Draw(FPSOnButton, new Vector2(30, 30), Color.White);
             }
-
             LiveSpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 650, 0);
             LiveSprite2POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 575, 0);
             LiveSprite3POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 500, 0);
