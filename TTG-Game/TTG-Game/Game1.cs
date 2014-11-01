@@ -77,7 +77,8 @@ namespace LinuxTesting
         SoundEffectInstance gameplaymusicInstance;
         SoundEffect lifelost;
         SoundEffectInstance lifelostInstance;
-        //gameplaymusicInstance.IsLooped = false;
+        SoundEffect mouseclicksound;
+        SoundEffectInstance mouseclicksoundInstance;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -201,6 +202,11 @@ namespace LinuxTesting
 
             gameplaymusic = Content.Load<SoundEffect>("Sound/gameplaymusic");
             gameplaymusicInstance = gameplaymusic.CreateInstance();
+
+            mouseclicksound = Content.Load<SoundEffect>("Sound/mouseclicksound");
+            mouseclicksoundInstance = mouseclicksound.CreateInstance();
+            mouseclicksoundInstance.Volume = 1;
+            mouseclicksoundInstance.Pitch = 1;
 
             background = Content.Load<Texture2D>("Images/background");
         }
@@ -385,6 +391,7 @@ namespace LinuxTesting
             if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
             {
                 MouseClicked(mouseState.X, mouseState.Y);
+                mouseclicksoundInstance.Play();
             }
 
             previousMouseState = mouseState;
@@ -536,6 +543,7 @@ namespace LinuxTesting
                 Rectangle exitButtonRect = new Rectangle((int)ExitButtonPOS.X, (int)ExitButtonPOS.Y, 100, 20);
                 if (mouseClickRect.Intersects(startButtonRect))
                 {
+                    mouseclicksoundInstance.Play();
                     gameStates = GameStates.Loading;
                     isLoading = false;
                 }
@@ -551,6 +559,7 @@ namespace LinuxTesting
 
                 if (mouseClickRect.Intersects(PauseButtonRect))
                 {
+                    mouseclicksoundInstance.Play();
                     gameStates = GameStates.Paused;
                 }
             }
@@ -560,6 +569,7 @@ namespace LinuxTesting
                 Rectangle ResumeButtonRect = new Rectangle((int)ResumeButtonPOS.X, (int)ResumeButtonPOS.Y, 100, 20);
                 if (mouseClickRect.Intersects(ResumeButtonRect))
                 {
+                    mouseclicksoundInstance.Play();
                     gameStates = GameStates.Playing;
                 }
             }
