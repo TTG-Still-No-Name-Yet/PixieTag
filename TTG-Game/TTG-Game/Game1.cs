@@ -115,6 +115,7 @@ namespace LinuxTesting
 
         // Guns stuff - Connor
         GameObject arm;
+	GameObject[] bullets;
         private SpriteEffects flip = SpriteEffects.None;
 
         //Game state
@@ -185,7 +186,11 @@ namespace LinuxTesting
 
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
-
+	    bullets = new GameObject[12];
+	    for (ini i = 0; i < 12; i++)
+	    {
+		bullets[i] = new GameObject(Level.Content.Load<Texture2D>("Images/bullet"));
+	    }
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
 
@@ -256,6 +261,12 @@ namespace LinuxTesting
                 //}
             }
 
+	    if (state.IsKeyDown(Keys.LeftShift)
+	    {
+		FireBullet();
+	    }
+
+	    UpdateBullets();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -393,6 +404,19 @@ namespace LinuxTesting
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
+
+	private void FireBullet();
+	{
+		foreach (GameObject bullet in bullets)
+		{
+			if (!bullet.alive)
+			{
+				bullet.alive = true;
+			}
+		}
+	}
+
 
         protected override void Draw(GameTime gameTime)
         {
