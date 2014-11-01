@@ -79,6 +79,10 @@ namespace LinuxTesting
         SoundEffectInstance lifelostInstance;
         SoundEffect mouseclicksound;
         SoundEffectInstance mouseclicksoundInstance;
+        SoundEffect firesound1;
+        SoundEffectInstance firesound1Instance;
+        SoundEffect firesound2;
+        SoundEffectInstance firesound2Instance;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -196,17 +200,29 @@ namespace LinuxTesting
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
             lifelostInstance = lifelost.CreateInstance();
-
+            lifelostInstance.Volume = 0.5f;
             menumusic = Content.Load<SoundEffect>("Sound/menumusic");
             menumusicInstance = menumusic.CreateInstance();
+            menumusicInstance.Volume = 0.5f;
 
             gameplaymusic = Content.Load<SoundEffect>("Sound/gameplaymusic");
             gameplaymusicInstance = gameplaymusic.CreateInstance();
+            gameplaymusicInstance.Volume = 0.5f;
 
             mouseclicksound = Content.Load<SoundEffect>("Sound/mouseclicksound");
             mouseclicksoundInstance = mouseclicksound.CreateInstance();
-            mouseclicksoundInstance.Volume = 1;
             mouseclicksoundInstance.Pitch = 1;
+
+            firesound1 = Content.Load<SoundEffect>("Sound/firesound1");
+            firesound1Instance = firesound1.CreateInstance();
+            firesound1Instance.Pitch = 1;
+
+            firesound2 = Content.Load<SoundEffect>("Sound/firesound2");
+            firesound2Instance = firesound2.CreateInstance();
+            firesound2Instance.Volume = 0.8f;
+
+
+
 
             background = Content.Load<Texture2D>("Images/background");
         }
@@ -339,6 +355,10 @@ namespace LinuxTesting
                     }
                     SpritePOS.Y += speed;
                 }
+                if (state.IsKeyDown(Keys.LeftShift))
+                {
+                    firesound2Instance.Play();
+                }
 
                 // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
                 if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS.X < 40 || SpritePOS.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS.Y < 40)
@@ -352,7 +372,7 @@ namespace LinuxTesting
                             gameplaymusicInstance.Stop();
                             lifelostInstance.Play();
                             Console.WriteLine("You have no lives left.");
-                            Thread.Sleep(1000);
+                            Thread.Sleep(1600);
                             gameStates = GameStates.StartMenu;
                             LeftArena = false;
 
