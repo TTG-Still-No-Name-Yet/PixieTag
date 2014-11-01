@@ -234,6 +234,7 @@ namespace LinuxTesting
             firesound1 = Content.Load<SoundEffect>("Sound/firesound1");
             firesound1Instance = firesound1.CreateInstance();
             firesound1Instance.Pitch = 1;
+            
 
             firesound2 = Content.Load<SoundEffect>("Sound/firesound2");
             firesound2Instance = firesound2.CreateInstance();
@@ -375,14 +376,16 @@ namespace LinuxTesting
                     }
                     SpritePOS1.Y += speed;
                 }
-                if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
-                if (state.IsKeyDown(Keys.LeftShift))
-                {
-                    firesound1Instance.Play();
-                }
+                //if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
+
+                
                 if (state.IsKeyDown(Keys.RightShift))
                 {
                     firesound2Instance.Play();
+                }
+                if (state.IsKeyDown(Keys.LeftShift))
+                {
+                    firesound1Instance.Play();
                 }
 
                 // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
@@ -490,8 +493,10 @@ namespace LinuxTesting
                     {
                         if (Lives2 == 0)
                         {
-                            lifelost.Play();
+                            gameplaymusicInstance.Stop();
+                            lifelostInstance.Play();
                             Console.WriteLine("You have no lives left.");
+                            Thread.Sleep(1600);
                             gameStates = GameStates.StartMenu;
                             LeftArena = false;
                             break;
@@ -499,8 +504,11 @@ namespace LinuxTesting
                         else if ((Lives2 > 0) && (Lives2 <= 2))
                         {
                             Lives2--;
-                            lifelost.Play();
-                            
+                            gameplaymusicInstance.Pause();
+                            lifelost.Play();                            
+                            Thread.Sleep(1500);
+                            gameplaymusicInstance.Resume();
+
                             Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
                             LeftArena = false;
                         }
