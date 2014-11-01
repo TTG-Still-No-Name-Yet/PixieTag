@@ -151,8 +151,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\background3.png">
-      <Name>background3</Name>
+    <Compile Include="Images\sample_2.png">
+      <Name>sample_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\life2.png">
+      <Name>life2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
