@@ -140,6 +140,7 @@ namespace LinuxTesting
 
         // Guns stuff - Connor
         GameObject arm;
+        GameObject[] bullets;
         private SpriteEffects flip = SpriteEffects.None;
 
         //Game state
@@ -214,7 +215,11 @@ namespace LinuxTesting
 
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
-
+            bullets = new GameObject[12];
+            for (int i = 0; i < 12; i++)
+            {
+                bullets[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
+            }
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
             lifelostInstance = lifelost.CreateInstance();
@@ -305,7 +310,6 @@ namespace LinuxTesting
                 //}
             }
 
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // Load
@@ -321,6 +325,14 @@ namespace LinuxTesting
 
             //Grabbing keyboard state 
             KeyboardState state = Keyboard.GetState();
+
+            // Gun bullets
+            if (state.IsKeyDown(Keys.LeftShift))
+            {
+                FireBullet();
+            }
+
+            UpdateBullets();
 
             if (gameStates == GameStates.Playing)
             {
@@ -411,12 +423,15 @@ namespace LinuxTesting
                         {
                             Lives--;
                             lifelost.Play();
+<<<<<<< HEAD
+=======
                            
                                 gameplaymusicInstance.Pause();
                                 lifelostInstance.Play();
                                 Thread.Sleep(1500);
 
                                 gameplaymusicInstance.Resume();
+>>>>>>> master
 
                             Console.WriteLine("You lost a life, you have " + Lives + " lives left");
                             LeftArena = false;
@@ -549,13 +564,34 @@ namespace LinuxTesting
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
 
+
+        private void FireBullet()
+        {
+            foreach (GameObject bullet in bullets)
+            {
+                if (!bullet.alive)
+                {
+                    bullet.alive = true;
+                }
+            }
+        }
+
+        private void UpdateBullets()
+        {
+            
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             //Draw the background
+<<<<<<< HEAD
+            spriteBatch.Draw(background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+=======
             spriteBatch.Draw(Background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
             //spriteBatch.Draw(Background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+>>>>>>> master
             // Draw the menu - Matthew
 
             if (gameStates == GameStates.StartMenu)

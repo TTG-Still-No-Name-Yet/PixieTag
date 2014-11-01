@@ -144,6 +144,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+    <Compile Include="Images\bullet.jpg">
+      <Name>bullet</Name>
+=======
     <Compile Include="Images\youredead.png">
       <Name>youredead</Name>
       <Importer>TextureImporter</Importer>
@@ -193,6 +197,7 @@
   <ItemGroup>
     <Compile Include="Images\sample_2.png">
       <Name>sample_2</Name>
+>>>>>>> master
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
