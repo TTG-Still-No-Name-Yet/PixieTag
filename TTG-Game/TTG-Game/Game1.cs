@@ -477,7 +477,6 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.Playing)
             {
-<<<<<<< HEAD
                 if (menumusicInstance.State == SoundState.Playing)
                 {
                     menumusicInstance.Stop();
@@ -488,15 +487,11 @@ namespace LinuxTesting
                 {
                     gameplaymusicInstance.Play();
                 }
-                
-=======
                 // Gun stuffz
                 if (LeftArena == false)
                 {
                     spriteBatch.Draw(arm.sprite, arm.position, null, Color.White, arm.rotation, arm.center, 1.0f, flip, 0);
                 }
-
->>>>>>> origin/master
                 spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
                 if (Lives == 2)
