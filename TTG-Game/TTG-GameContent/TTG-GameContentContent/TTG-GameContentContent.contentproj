@@ -192,6 +192,29 @@
   </ItemGroup>
   <ItemGroup>
 <<<<<<< HEAD
+    <Compile Include="Images\goodwon.png">
+      <Name>goodwon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\badwon.png">
+      <Name>badwon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\badpixie.png">
+      <Name>badpixie</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Images\goodpixie.png">
+      <Name>goodpixie</Name>
+=======
+<<<<<<< HEAD
     <Compile Include="Sound\victorypixie1sound.wav">
       <Name>victorypixie1sound</Name>
       <Importer>WavImporter</Importer>
@@ -206,15 +229,23 @@
 =======
     <Compile Include="Images\bullet.png">
       <Name>bullet</Name>
+>>>>>>> master
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+    <Compile Include="Images\mail.png">
+      <Name>mail</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+=======
     <Compile Include="Images\gun2.png">
       <Name>gun2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+>>>>>>> master
 >>>>>>> master
     </Compile>
   </ItemGroup>
