@@ -1092,8 +1092,8 @@ namespace LinuxTesting
         /// </summary>
         void ResetGame()
         {
-            SpritePOS1 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
-            SpritePOS2 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
+            SpritePOS1 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2) + 400);
+            SpritePOS2 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2) - 400);
         }
         /// <summary>
         /// This variable is for recognising where the mouse is clicking
