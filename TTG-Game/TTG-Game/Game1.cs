@@ -21,7 +21,6 @@ namespace LinuxTesting
         public Vector2 center;
         public Vector2 velocity;
         public bool alive;
-
         public Rectangle rectangle
         {
             get
@@ -52,6 +51,7 @@ namespace LinuxTesting
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        
 
         // Image allocations - Matthew
         private Texture2D sprite;
@@ -89,6 +89,7 @@ namespace LinuxTesting
         private Vector2 Live2SpritePOS;
         private Vector2 Live2Sprite2POS;
         private Vector2 Live2Sprite3POS;
+        private Rectangle Meow;
 
 
         //Sprite Stuff - Matthew
@@ -110,6 +111,7 @@ namespace LinuxTesting
         private Texture2D Lives2Sprite;
         private Texture2D Lives2Sprite2;
         private Texture2D Lives2Sprite3;
+
 
         // Window stuff - Matthew
 
@@ -149,8 +151,6 @@ namespace LinuxTesting
             Debug
         }
 
-
-
         public Game1()
             : base()
         {
@@ -168,7 +168,7 @@ namespace LinuxTesting
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             //Draw mouse
             IsMouseVisible = true;
 
@@ -176,6 +176,7 @@ namespace LinuxTesting
             ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 450);
 
             gameStates = GameStates.StartMenu;
+
 
             //LoadGame();
             // Hai Mouse :3
@@ -212,13 +213,13 @@ namespace LinuxTesting
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
             arm2 = new GameObject(Content.Load <Texture2D>("Images/gun"));
-            bullets = new GameObject[100];
-            for (int i = 0; i < 100; i++)
+            bullets = new GameObject[1];
+            for (int i = 0; i < 1; i++)
             {
                 bullets[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
             }
-            bullets2 = new GameObject[100];
-            for (int i = 0; i < 100; i++ )
+            bullets2 = new GameObject[1];
+            for (int i = 0; i < 1; i++ )
             {
                 bullets2[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
             }
@@ -268,11 +269,10 @@ namespace LinuxTesting
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState keyboardState;
             // Gu stufz
             if (flip == SpriteEffects.FlipHorizontally)
             {
-                arm.position = new Vector2(SpritePOS1.X, SpritePOS1.Y);//mouseState.X, mouseState.Y);
+                arm.position = new Vector2(SpritePOS1.X+35, SpritePOS1.Y+18);//mouseState.X, mouseState.Y);
             }
 
             if (flip2 == SpriteEffects.FlipHorizontally)
@@ -556,7 +556,7 @@ namespace LinuxTesting
                         }
                         else if ((Lives2 > 0) && (Lives2 <= 2))
                         {
-                            Lives2--;
+                            //Lives2--;
                             lifelost.Play();
                             
                             Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
@@ -571,6 +571,7 @@ namespace LinuxTesting
                 }
 
             }
+
 
             mouseState = Mouse.GetState();
             if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
@@ -598,7 +599,6 @@ namespace LinuxTesting
             //        currentFrame.Y = 0;
             //}
 
-
             base.Update(gameTime);
         }
 
@@ -617,7 +617,7 @@ namespace LinuxTesting
                 {
                     //And set it to alive.
                     bullet.alive = true;
-
+                    
                     if (flip == SpriteEffects.FlipHorizontally) //Facing right
                     {
                         float armCos = (float)Math.Cos(arm.rotation - MathHelper.PiOver2);
@@ -654,8 +654,14 @@ namespace LinuxTesting
                            -armCos,
                            -armSin) * 15.0f;
                     }
-
-                    return;
+                    Rectangle Pixie2PosRect = new Rectangle((int)SpritePOS2.X, (int)SpritePOS2.Y, 70, 70);
+                    //Rectangle Pixie2PosRect = new Rectangle((int)SpritePOS1.X, (int)SpritePOS1.Y, 20, 20);
+                    if (Pixie2PosRect.Intersects(bullet.rectangle))
+                    {
+                        lifelostInstance.Play();
+                        Lives2--;
+                    }
+                    //}
                 }
             }
         }
@@ -706,8 +712,12 @@ namespace LinuxTesting
                            -armCos2,
                            -armSin2) * 15.0f;
                     }
-
-                    return;
+                    Rectangle Pixie1PosRect = new Rectangle((int)SpritePOS1.X, (int)SpritePOS1.Y, 70, 70);
+                    if (bullet2.rectangle.Intersects(Pixie1PosRect))
+                    {
+                        lifelostInstance.Play();
+                        Lives--;
+                    }
                 }
             }
         }
@@ -739,8 +749,7 @@ namespace LinuxTesting
                     Rectangle bulletRect = new Rectangle(
                         (int)bullet.position.X - bullet.sprite.Width * 2,
                         (int)bullet.position.Y - bullet.sprite.Height * 2,
-                        bullet.sprite.Width * 4,
-                        bullet.sprite.Height * 4);
+                        20,20);
                 }
             }
         }
@@ -759,9 +768,7 @@ namespace LinuxTesting
                     //Rectangle the size of the screen so bullets that
                     //fly off screen are deleted.
                     Rectangle screenRect2 = new Rectangle(0, 0, 1280, 720);
-                    if (!screenRect2.Contains(new Point(
-                        (int)bullet2.position.X,
-                        (int)bullet2.position.Y)))
+                    if (!screenRect2.Contains(new Point((int)bullet2.position.X,(int)bullet2.position.Y)))
                     {
                         bullet2.alive = false;
                         continue;
@@ -772,8 +779,7 @@ namespace LinuxTesting
                     Rectangle bulletRect2 = new Rectangle(
                         (int)bullet2.position.X - bullet2.sprite.Width * 2,
                         (int)bullet2.position.Y - bullet2.sprite.Height * 2,
-                        bullet2.sprite.Width * 4,
-                        bullet2.sprite.Height * 4);
+                        10,10);
                 }
             }
         }
