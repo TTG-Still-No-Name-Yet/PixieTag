@@ -184,7 +184,7 @@ namespace LinuxTesting
             LivesSprite3 = LivesSprite;
 
             // Load content for the guns
-            arm = new GameObject(Content.Load<Texture2D>("Images/Orb"));
+            arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
 
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
@@ -216,14 +216,12 @@ namespace LinuxTesting
             // Gu stufz
             if (flip == SpriteEffects.FlipHorizontally)
             {
-                arm.position = new Vector2(mouseState.Y, mouseState.X);
+                arm.position = new Vector2(SpritePOS.X, SpritePOS.Y);//mouseState.X, mouseState.Y);
             }
             else
             {
-                arm.position = new Vector2(arm.position.X, arm.position.Y);
+                arm.position = new Vector2(SpritePOS.X, SpritePOS.Y);//mouseState.X, mouseState.Y);
             }
-            //Arm rotation
-            arm.rotation = (float)Math.Atan2(mouseState.Y, mouseState.X);
 
             if (flip == SpriteEffects.FlipHorizontally) //Facing right
             {
@@ -285,6 +283,7 @@ namespace LinuxTesting
                     //Point currentFrame = new Point(2, 0);
                     currentFrame.Y = 2;
                     currentFrame.X++;
+                    arm.rotation = 1.55f;
                     if (currentFrame.X >= sheetSize.X)
                     {
                         currentFrame.X = 0;
@@ -296,6 +295,7 @@ namespace LinuxTesting
                 {
                     currentFrame.Y = 1;
                     currentFrame.X++;
+                    arm.rotation = 4.7f;
                     if (currentFrame.X >= sheetSize.X)
                     {
                         currentFrame.X = 0;
@@ -307,6 +307,7 @@ namespace LinuxTesting
                 {
                     currentFrame.Y = 3;
                     currentFrame.X++;
+                    arm.rotation = 0f;
                     if (currentFrame.X >= sheetSize.X)
                     {
                         currentFrame.X = 0;
@@ -318,6 +319,7 @@ namespace LinuxTesting
                 {
                     currentFrame.Y = 0;
                     currentFrame.X++;
+                    arm.rotation = 3.1f;
                     if (currentFrame.X >= sheetSize.X)
                     {
                         currentFrame.X = 0;
