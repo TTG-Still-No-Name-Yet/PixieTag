@@ -47,8 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TTG-GameContentContent\TTG-GameContentContent.contentproj">
-      <Name>LinuxTestingContentContent</Name>
+      <Name>TTG-GameContentContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{A77F4062-2C14-445A-B624-B414DFF46750}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
