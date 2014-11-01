@@ -93,8 +93,8 @@ namespace LinuxTesting
         private Vector2 Live2SpritePOS;
         private Vector2 Live2Sprite2POS;
         private Vector2 Live2Sprite3POS;
+        private Vector2 MailPOS;
         private Rectangle Meow;
-
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -104,6 +104,8 @@ namespace LinuxTesting
         //Pixie Sprite
         private Texture2D Pixie1;
         private Texture2D Pixie2;
+        private bool BadPixieWin;
+        private bool GoodPixieWin;
 
         //Life stuff
         private int Lives = 0;
@@ -115,6 +117,12 @@ namespace LinuxTesting
         private Texture2D Lives2Sprite;
         private Texture2D Lives2Sprite2;
         private Texture2D Lives2Sprite3;
+        private Texture2D Mail;
+
+
+        //Winning announcer
+        private Texture2D GoodWon;
+        private Texture2D BadWon;
 
 
         // Window stuff - Matthew
@@ -152,7 +160,8 @@ namespace LinuxTesting
             Loading,
             Playing,
             Paused,
-            Debug
+            BadPixieWin,
+            GoodPixieWin
         }
 
         public Game1()
@@ -213,6 +222,9 @@ namespace LinuxTesting
             Lives2Sprite = Content.Load<Texture2D>("Images/life2");
             Lives2Sprite2 = Lives2Sprite;
             Lives2Sprite3 = Lives2Sprite;
+            GoodWon = Content.Load<Texture2D>("Images/goodwon");
+            BadWon = Content.Load<Texture2D>("Images/badwon");
+            Mail = Content.Load<Texture2D>("Images/mail");
 
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
@@ -483,7 +495,7 @@ namespace LinuxTesting
 
                 //            Console.WriteLine("You lost a life, you have " + Lives + " lives left");
                 //            LeftArena = false;
-
+                            
                 //        }
 
                 //        if (LeftArena == false)
@@ -493,7 +505,7 @@ namespace LinuxTesting
                 //}
                 //else {
                 //    LeftArena = true;
-
+                           
                 //        if (Lives == 0)
                 //        {
                 //            gameplaymusicInstance.Stop();
@@ -650,6 +662,13 @@ namespace LinuxTesting
             //        currentFrame.Y = 0;
             //}
 
+            if (gameStates == GameStates.BadPixieWin)
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(BadWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.End();
+            }
+
             base.Update(gameTime);
         }
 
@@ -777,12 +796,19 @@ namespace LinuxTesting
                         lifelostInstance.Play();
                         Console.WriteLine(Lives);
                         Lives--;
-
                         if (Lives == 0)
                         {
-                            Thread.Sleep(1000);
-                            gameStates = GameStates.StartMenu;
+                            BadPixieWin = true;
                         }
+
+                        if (Lives == 0 && BadPixieWin == true)
+                        {
+                            gameStates = GameStates.BadPixieWin;
+                            gameplaymusicInstance.Stop();
+                            victorypixie2soundInstance.Play();
+ 
+                        }
+
                     }
                 }
             }
@@ -859,7 +885,8 @@ namespace LinuxTesting
             spriteBatch.Draw(Background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
             //spriteBatch.Draw(Background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             // Draw the menu - Matthew
-
+            Rectangle Mail = new Rectangle((int)MailPOS.X, (int)MailPOS.Y, 300, 300);
+            //spriteBatch.Draw(Mail, MailPOS, Color.White);
             if (gameStates == GameStates.StartMenu)
             {
                 if (menumusicInstance.State == SoundState.Stopped)
@@ -929,17 +956,12 @@ namespace LinuxTesting
                 else
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
 
+
             }
             if (gameStates == GameStates.Paused)
             {
                 spriteBatch.Draw(ResumeButton, ResumeButtonPOS, Color.White);
             }
-
-            if (gameStates == GameStates.Debug)
-            {
-                spriteBatch.Draw(FPSOnButton, new Vector2(30, 30), Color.White);
-            }
-
             LiveSpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 650, 0);
             LiveSprite2POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 575, 0);
             LiveSprite3POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 500, 0);
@@ -964,6 +986,11 @@ namespace LinuxTesting
                     spriteBatch.Draw(bullet2.sprite,
                         bullet2.position, Color.White);
                 }
+            }
+
+            if (gameStates == GameStates.BadPixieWin)
+            {
+                spriteBatch.Draw(BadWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             }
             //spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
