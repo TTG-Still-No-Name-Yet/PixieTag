@@ -357,6 +357,10 @@ namespace LinuxTesting
                 }
                 if (state.IsKeyDown(Keys.LeftShift))
                 {
+                    firesound1Instance.Play();
+                }
+                if (state.IsKeyDown(Keys.RightShift))
+                {
                     firesound2Instance.Play();
                 }
 
