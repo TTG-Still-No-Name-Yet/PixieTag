@@ -448,57 +448,84 @@ namespace LinuxTesting
                 
                 if (state.IsKeyDown(Keys.RightShift))
                 {
-                    victorypixie1soundInstance.Play();
+                    firesound2Instance.Play();
                 }
                 if (state.IsKeyDown(Keys.LeftShift))
                 {                  
-                    victorypixie2soundInstance.Play();
+                    firesound1Instance.Play();
                 }
 
-                // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
-                if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
-                {
-                    LeftArena = true;
+                //// Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
+                //if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
+                //{
+                //   LeftArena = true;
 
-                    while (LeftArena)
-                    {
-                        if (Lives == 0)
-                        {
-                            gameplaymusicInstance.Stop();
-                            lifelostInstance.Play();
-                            Console.WriteLine("You have no lives left.");
-                            Thread.Sleep(1600);
-                            gameStates = GameStates.StartMenu;
-                            LeftArena = false;
+                //        if (Lives == 0)
+                //        {
+                //            gameplaymusicInstance.Stop();
+                //            lifelostInstance.Play();
+                //            Console.WriteLine("You have no lives left.");
+                //            Thread.Sleep(1600);
+                //            gameStates = GameStates.StartMenu;
+                //            LeftArena = false;
 
-                            
-
+                //        }
+                //        else if ((Lives > 0) || (Lives <= 2))
+                //        {
+                //            Lives--;
+                //            lifelostInstance.Play();
                            
+                //                gameplaymusicInstance.Pause();
+                //                lifelostInstance.Play();
+                //                Thread.Sleep(1500);
 
-                            break;
-                        }
-                        else if ((Lives > 0) && (Lives <= 2))
-                        {
-                            Lives--;
-                            lifelostInstance.Play();
+                //                gameplaymusicInstance.Resume();
+
+                //            Console.WriteLine("You lost a life, you have " + Lives + " lives left");
+                //            LeftArena = false;
+
+                //        }
+
+                //        if (LeftArena == false)
+                //        {
+                //            ResetGame();
+                //        }
+                //}
+                //else {
+                //    LeftArena = true;
+
+                //        if (Lives == 0)
+                //        {
+                //            gameplaymusicInstance.Stop();
+                //            lifelostInstance.Play();
+                //            Console.WriteLine("You have no lives left.");
+                //            Thread.Sleep(1600);
+                //            gameStates = GameStates.StartMenu;
+                //            LeftArena = false;
+
+                //        }
+                //        else if ((Lives > 0) || (Lives <= 3))
+                //        {
+                //            //Lives--;
+                //            lifelostInstance.Play();
                            
-                                gameplaymusicInstance.Pause();
-                                lifelostInstance.Play();
-                                Thread.Sleep(1500);
+                //                gameplaymusicInstance.Pause();
+                //                lifelostInstance.Play();
+                //                Thread.Sleep(1500);
 
-                                gameplaymusicInstance.Resume();
+                //                gameplaymusicInstance.Resume();
 
-                            Console.WriteLine("You lost a life, you have " + Lives + " lives left");
-                            LeftArena = false;
+                //            Console.WriteLine("You lost a life, you have " + Lives + " lives left");
+                //            LeftArena = false;
 
-                        }
+                //        }
 
-                        if (LeftArena == false)
-                        {
-                            ResetGame();
-                        }
-                    }
-                }
+                //        if (LeftArena == false)
+                //        {
+                //            ResetGame();
+                //        }
+                //}
+
 
 
 
@@ -574,18 +601,15 @@ namespace LinuxTesting
                         }
                         else if ((Lives2 > 0) && (Lives2 <= 2))
                         {
-<<<<<<< HEAD
                             Lives2--;
                             gameplaymusicInstance.Pause();
                             lifelostInstance.Play();                            
                             Thread.Sleep(1500);
                             gameplaymusicInstance.Resume();
 
-=======
                             //Lives2--;
                             lifelost.Play();
                             
->>>>>>> master
                             Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
                             LeftArena = false;
                         }
@@ -681,12 +705,20 @@ namespace LinuxTesting
                            -armCos,
                            -armSin) * 15.0f;
                     }
+                    Rectangle Pixie1PosRect = new Rectangle((int)SpritePOS1.X, (int)SpritePOS1.Y, 70, 70);
                     Rectangle Pixie2PosRect = new Rectangle((int)SpritePOS2.X, (int)SpritePOS2.Y, 70, 70);
                     //Rectangle Pixie2PosRect = new Rectangle((int)SpritePOS1.X, (int)SpritePOS1.Y, 20, 20);
                     if (Pixie2PosRect.Intersects(bullet.rectangle))
                     {
                         lifelostInstance.Play();
+                        Console.WriteLine(Lives2);
                         Lives2--;
+
+                        if (Lives2 == 0)
+                        {
+                            Thread.Sleep(1000);
+                            gameStates = GameStates.StartMenu;
+                        }
                     }
                     //}
                 }
@@ -740,10 +772,17 @@ namespace LinuxTesting
                            -armSin2) * 15.0f;
                     }
                     Rectangle Pixie1PosRect = new Rectangle((int)SpritePOS1.X, (int)SpritePOS1.Y, 70, 70);
-                    if (bullet2.rectangle.Intersects(Pixie1PosRect))
+                    if (Pixie1PosRect.Intersects(bullet2.rectangle))
                     {
                         lifelostInstance.Play();
+                        Console.WriteLine(Lives);
                         Lives--;
+
+                        if (Lives == 0)
+                        {
+                            Thread.Sleep(1000);
+                            gameStates = GameStates.StartMenu;
+                        }
                     }
                 }
             }
@@ -862,13 +901,13 @@ namespace LinuxTesting
                     spriteBatch.Draw(arm2.sprite, arm2.position, null, Color.White, arm2.rotation, arm2.center, 1.0f, flip2, 0);
                 }
                 //spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                if (Lives == 2)
+                if (Lives == 3)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
                     spriteBatch.Draw(LivesSprite3, LiveSprite3POS, Color.White);
                 }
-                else if (Lives == 1)
+                else if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
@@ -876,13 +915,13 @@ namespace LinuxTesting
                 else
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
 
-                if (Lives2 == 2)
+                if (Lives2 == 3)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
                     spriteBatch.Draw(Lives2Sprite3, Live2Sprite3POS, Color.White);
                 }
-                else if (Lives2 == 1)
+                else if (Lives2 == 2)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
@@ -947,8 +986,8 @@ namespace LinuxTesting
             // Testing load screen don't leave this command in on launch - Matthew
             //Thread.Sleep(3000);
 
-            Lives = 2;
-            Lives2 = 2;
+            Lives = 3;
+            Lives2 = 3;
 
             gameStates = GameStates.Playing;
             isLoading = false;

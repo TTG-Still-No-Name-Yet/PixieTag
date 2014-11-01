@@ -191,7 +191,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Sound\victorypixie1sound.wav">
       <Name>victorypixie1sound</Name>
       <Importer>WavImporter</Importer>
@@ -203,7 +202,7 @@
       <Name>victorypixie2sound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
-=======
+    </Compile>
     <Compile Include="Images\bullet.png">
       <Name>bullet</Name>
       <Importer>TextureImporter</Importer>
@@ -215,7 +214,6 @@
       <Name>gun2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
->>>>>>> master
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
