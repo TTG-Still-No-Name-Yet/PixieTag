@@ -665,7 +665,7 @@ namespace LinuxTesting
                             gameplaymusicInstance.Resume();
 
                             //Lives2--;
-                            lifelost.Play();
+                            
                             
                             Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
                             LeftArena = false;
@@ -788,7 +788,9 @@ namespace LinuxTesting
                         if (Lives2 == 0)
                         {
                             GoodPixieWin = true;
-                            if (Lives2 == 0 && GoodPixieWin == true)
+                        }
+                            
+                        if (Lives2 == 0 && GoodPixieWin == true)
                             {
                                 gameStates = GameStates.GoodPixieWin;
                                 gameplaymusicInstance.Stop();
@@ -796,10 +798,8 @@ namespace LinuxTesting
                             }
                         }
                     }
-                    //}
                 }
             }
-        }
 
         private void FireBullet2()
         {
@@ -991,13 +991,13 @@ namespace LinuxTesting
                     spriteBatch.Draw(arm2.sprite, arm2.position, null, Color.White, arm2.rotation, arm2.center, 1.0f, flip2, 0);
                 }
                 //spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                if (Lives == 2)
+                if (Lives == 3)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
                     spriteBatch.Draw(LivesSprite3, LiveSprite3POS, Color.White);
                 }
-                else if (Lives == 1)
+                else if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
@@ -1005,13 +1005,13 @@ namespace LinuxTesting
                 else
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
 
-                if (Lives2 == 2)
+                if (Lives2 == 3)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
                     spriteBatch.Draw(Lives2Sprite3, Live2Sprite3POS, Color.White);
                 }
-                else if (Lives2 == 1)
+                else if (Lives2 == 2)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
@@ -1086,8 +1086,8 @@ namespace LinuxTesting
             // Testing load screen don't leave this command in on launch - Matthew
             //Thread.Sleep(3000);
 
-            Lives = 2;
-            Lives2 = 2;
+            Lives = 3;
+            Lives2 = 3;
 
             gameStates = GameStates.Playing;
             isLoading = false;
