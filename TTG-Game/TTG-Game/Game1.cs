@@ -62,6 +62,7 @@ namespace LinuxTesting
         private Texture2D LoadingScreen;
         private Texture2D FPSOnButton;
         private Texture2D Background;
+        private Texture2D MainMenu;
 
         // Sound Instance
         SoundEffect menumusic;
@@ -96,6 +97,7 @@ namespace LinuxTesting
         private Vector2 MailPOS;
         private Rectangle Meow;
         private Vector2 BadWonPOS;
+        private Vector2 MainMenuPOS;
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -662,12 +664,11 @@ namespace LinuxTesting
             //    if (currentFrame.Y >= sheetSize.Y)
             //        currentFrame.Y = 0;
             //}
-
             if (gameStates == GameStates.BadPixieWin)
             {
-                BadWonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 0, 0);
+                BadWonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 800, 0);
                 spriteBatch.Begin();
-                spriteBatch.Draw(BadWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.Draw(BadWon, BadWonPOS, Color.White);
                 spriteBatch.End();
             }
             else if (gameStates == GameStates.GoodPixieWin)
@@ -979,8 +980,10 @@ namespace LinuxTesting
             }
             if (gameStates == GameStates.Paused)
             {
+                spriteBatch.Draw(MainMenu, MainMenuPOS, Color.White);
                 spriteBatch.Draw(ResumeButton, ResumeButtonPOS, Color.White);
             }
+
             LiveSpritePOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 650, 0);
             LiveSprite2POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 575, 0);
             LiveSprite3POS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 500, 0);
@@ -1025,7 +1028,8 @@ namespace LinuxTesting
         /// </summary>
         void LoadGame()
         {
-
+            MainMenu = Content.Load<Texture2D>("Images/mainmenu");
+            MainMenuPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (MainMenu.Width / 2), (GraphicsDevice.Viewport.Height / 2) - (MainMenu.Height / 2) - 40);
             sprite = Content.Load<Texture2D>("Images/Orb");
             PauseButton = Content.Load<Texture2D>("Images/123");
             ResumeButton = Content.Load<Texture2D>("Images/1234");
@@ -1093,11 +1097,18 @@ namespace LinuxTesting
             //Resume Button
             if (gameStates == GameStates.Paused)
             {
+                Rectangle MainMenuRect = new Rectangle((int)MainMenuPOS.X, (int)MainMenuPOS.Y, 100, 20);
                 Rectangle ResumeButtonRect = new Rectangle((int)ResumeButtonPOS.X, (int)ResumeButtonPOS.Y, 100, 20);
                 if (mouseClickRect.Intersects(ResumeButtonRect))
                 {
                     mouseclicksoundInstance.Play();
                     gameStates = GameStates.Playing;
+                }
+
+                if (mouseClickRect.Intersects(MainMenuRect))
+                {
+                    mouseclicksoundInstance.Play();
+                    gameStates = GameStates.StartMenu;
                 }
             }
         }
