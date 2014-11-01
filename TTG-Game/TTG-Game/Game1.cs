@@ -67,11 +67,22 @@ namespace LinuxTesting
 
         // Sound allocations
         private SoundEffect bang;
-        private SoundEffect lifelost;
+
+
 
         // Sound Instance
         SoundEffect menumusic;
         SoundEffectInstance menumusicInstance;
+        SoundEffect gameplaymusic;
+        SoundEffectInstance gameplaymusicInstance;
+        SoundEffect lifelost;
+        SoundEffectInstance lifelostInstance;
+        SoundEffect mouseclicksound;
+        SoundEffectInstance mouseclicksoundInstance;
+        SoundEffect firesound1;
+        SoundEffectInstance firesound1Instance;
+        SoundEffect firesound2;
+        SoundEffectInstance firesound2Instance;
 
         // POS Allocation - Matthew
         private Vector2 StartButtonPOS;
@@ -125,7 +136,7 @@ namespace LinuxTesting
 
         MouseState mouseState;
         MouseState previousMouseState;
-        
+
 
         // Guns stuff - Connor
         GameObject arm;
@@ -140,7 +151,7 @@ namespace LinuxTesting
             Paused,
             Debug
         }
-        
+
 
 
         public Game1()
@@ -206,9 +217,29 @@ namespace LinuxTesting
 
 
             lifelost = Content.Load<SoundEffect>("Sound/lifelost");
-
+            lifelostInstance = lifelost.CreateInstance();
+            lifelostInstance.Volume = 0.5f;
             menumusic = Content.Load<SoundEffect>("Sound/menumusic");
             menumusicInstance = menumusic.CreateInstance();
+            menumusicInstance.Volume = 0.5f;
+
+            gameplaymusic = Content.Load<SoundEffect>("Sound/gameplaymusic");
+            gameplaymusicInstance = gameplaymusic.CreateInstance();
+            gameplaymusicInstance.Volume = 0.5f;
+
+            mouseclicksound = Content.Load<SoundEffect>("Sound/mouseclicksound");
+            mouseclicksoundInstance = mouseclicksound.CreateInstance();
+            mouseclicksoundInstance.Pitch = 1;
+
+            firesound1 = Content.Load<SoundEffect>("Sound/firesound1");
+            firesound1Instance = firesound1.CreateInstance();
+            firesound1Instance.Pitch = 1;
+
+            firesound2 = Content.Load<SoundEffect>("Sound/firesound2");
+            firesound2Instance = firesound2.CreateInstance();
+            firesound2Instance.Volume = 0.8f;
+
+
 
 
             Background = Content.Load<Texture2D>("Images/background");
@@ -234,14 +265,12 @@ namespace LinuxTesting
             // Gu stufz
             if (flip == SpriteEffects.FlipHorizontally)
             {
-                arm.position = new Vector2(arm.position.X + 5, arm.position.Y - 60);
+                arm.position = new Vector2(SpritePOS.X, SpritePOS.Y);//mouseState.X, mouseState.Y);
             }
             else
             {
-                arm.position = new Vector2(arm.position.X - 5, arm.position.Y + 60);
+                arm.position = new Vector2(SpritePOS.X, SpritePOS.Y);//mouseState.X, mouseState.Y);
             }
-            //Arm rotation
-            arm.rotation = (float)Math.Atan2(mouseState.Y, mouseState.X);
 
             if (flip == SpriteEffects.FlipHorizontally) //Facing right
             {
@@ -303,6 +332,7 @@ namespace LinuxTesting
                     //Point currentFrame = new Point(2, 0);
                     currentFrame.Y = 2;
                     currentFrame.X++;
+                    arm.rotation = 1.55f;
                     if (currentFrame.X >= sheetSize.X)
                     {
                         currentFrame.X = 0;
@@ -314,6 +344,7 @@ namespace LinuxTesting
                 {
                     currentFrame.Y = 1;
                     currentFrame.X++;
+                    arm.rotation = 4.7f;
                     if (currentFrame.X >= sheetSize.X)
                     {
                         currentFrame.X = 0;
@@ -325,6 +356,7 @@ namespace LinuxTesting
                 {
                     currentFrame.Y = 3;
                     currentFrame.X++;
+                    arm.rotation = 0f;
                     if (currentFrame.X >= sheetSize.X)
                     {
                         currentFrame.X = 0;
@@ -336,13 +368,28 @@ namespace LinuxTesting
                 {
                     currentFrame.Y = 0;
                     currentFrame.X++;
+                    arm.rotation = 3.1f;
                     if (currentFrame.X >= sheetSize.X)
                     {
                         currentFrame.X = 0;
                     }
                     SpritePOS1.Y += speed;
                 }
+<<<<<<< HEAD
                 if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
+=======
+                if (state.IsKeyDown(Keys.LeftShift))
+                {
+                    firesound1Instance.Play();
+                }
+                if (state.IsKeyDown(Keys.RightShift))
+                {
+                    firesound2Instance.Play();
+                }
+
+                // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
+                if (SpritePOS.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS.X < 40 || SpritePOS.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS.Y < 40)
+>>>>>>> master
                 {
                     LeftArena = true;
 
@@ -350,19 +397,37 @@ namespace LinuxTesting
                     {
                         if (Lives == 0)
                         {
-                            lifelost.Play();
+                            gameplaymusicInstance.Stop();
+                            lifelostInstance.Play();
                             Console.WriteLine("You have no lives left.");
+                            Thread.Sleep(1600);
                             gameStates = GameStates.StartMenu;
                             LeftArena = false;
+
+                            
+
+                           
+
                             break;
                         }
                         else if ((Lives > 0) && (Lives <= 2))
                         {
                             Lives--;
+<<<<<<< HEAD
                             lifelost.Play();
+=======
+                           
+                                gameplaymusicInstance.Pause();
+                                lifelostInstance.Play();
+                                Thread.Sleep(1500);
+
+                                gameplaymusicInstance.Resume();
+                                                                                  
+>>>>>>> master
 
                             Console.WriteLine("You lost a life, you have " + Lives + " lives left");
                             LeftArena = false;
+
                         }
 
                         if (LeftArena == false)
@@ -460,6 +525,7 @@ namespace LinuxTesting
             if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
             {
                 MouseClicked(mouseState.X, mouseState.Y);
+                mouseclicksoundInstance.Play();
             }
 
             previousMouseState = mouseState;
@@ -495,20 +561,25 @@ namespace LinuxTesting
             //GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             //Draw the background
+<<<<<<< HEAD
             spriteBatch.Draw(Background,new Rectangle(0, 0, Window.ClientBounds.Width,Window.ClientBounds.Height), null,Color.White, 0, Vector2.Zero,SpriteEffects.None, 0);
+=======
+            spriteBatch.Draw(background, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+>>>>>>> master
             // Draw the menu - Matthew
-           
+
             if (gameStates == GameStates.StartMenu)
             {
-
                 if (menumusicInstance.State == SoundState.Stopped)
                 {
+                    gameplaymusicInstance.Stop();
                     menumusicInstance.Play();
+                    
                 }
 
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
-  
+
             }
 
             if (gameStates == GameStates.Loading)
@@ -518,9 +589,29 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.Playing)
             {
+<<<<<<< HEAD
                 spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(Pixie2, SpritePOS2, new Rectangle(currentFrame2.X * frameSize2.X, currentFrame2.Y * frameSize2.Y, frameSize2.X, frameSize2.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.Draw(PauseButton, new Vector2(15, 10), Color.White);
+=======
+                if (menumusicInstance.State == SoundState.Playing)
+                {
+                    menumusicInstance.Stop();
+                    gameplaymusicInstance.Play();
+                }
+                
+                if (gameplaymusicInstance.State == SoundState.Stopped)
+                {
+                    gameplaymusicInstance.Play();
+                }
+                // Gun stuffz
+                if (LeftArena == false)
+                {
+                    spriteBatch.Draw(arm.sprite, arm.position, null, Color.White, arm.rotation, arm.center, 1.0f, flip, 0);
+                }
+                spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
+>>>>>>> master
                 if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
@@ -620,6 +711,7 @@ namespace LinuxTesting
                 Rectangle exitButtonRect = new Rectangle((int)ExitButtonPOS.X, (int)ExitButtonPOS.Y, 100, 20);
                 if (mouseClickRect.Intersects(startButtonRect))
                 {
+                    mouseclicksoundInstance.Play();
                     gameStates = GameStates.Loading;
                     isLoading = false;
                 }
@@ -635,6 +727,7 @@ namespace LinuxTesting
 
                 if (mouseClickRect.Intersects(PauseButtonRect))
                 {
+                    mouseclicksoundInstance.Play();
                     gameStates = GameStates.Paused;
                 }
             }
@@ -644,6 +737,7 @@ namespace LinuxTesting
                 Rectangle ResumeButtonRect = new Rectangle((int)ResumeButtonPOS.X, (int)ResumeButtonPOS.Y, 100, 20);
                 if (mouseClickRect.Intersects(ResumeButtonRect))
                 {
+                    mouseclicksoundInstance.Play();
                     gameStates = GameStates.Playing;
                 }
             }
