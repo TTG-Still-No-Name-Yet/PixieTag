@@ -598,7 +598,6 @@ namespace LinuxTesting
                     spriteBatch.Draw(arm.sprite, arm.position, null, Color.White, arm.rotation, arm.center, 1.0f, flip, 0);
                 }
                 spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                spriteBatch.Draw(PauseButton, new Vector2(0, 0), Color.White);
                 if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
