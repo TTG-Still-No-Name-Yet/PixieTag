@@ -63,6 +63,7 @@ namespace LinuxTesting
         private Texture2D FPSOnButton;
         private Texture2D Background;
         private Texture2D MainMenu;
+        private Texture2D titleLogo;
 
         // Sound Instance
         SoundEffect menumusic;
@@ -95,6 +96,7 @@ namespace LinuxTesting
         private Vector2 Live2Sprite2POS;
         private Vector2 Live2Sprite3POS;
         private Vector2 MailPOS;
+        private Vector2 titleLogoPOS;
         private Rectangle Meow;
         private Vector2 BadWonPOS;
         private Vector2 MainMenuPOS;
@@ -190,6 +192,7 @@ namespace LinuxTesting
 
             StartButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 400);
             ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 450);
+            titleLogoPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -400, 240);
 
             gameStates = GameStates.StartMenu;
 
@@ -199,6 +202,9 @@ namespace LinuxTesting
             mouseState = Mouse.GetState();
             previousMouseState = mouseState;
 
+            this.graphics.PreferredBackBufferHeight = 1920;
+            this.graphics.PreferredBackBufferWidth = 1080;
+            this.graphics.IsFullScreen = true;
             base.Initialize();
         }
 
@@ -228,6 +234,7 @@ namespace LinuxTesting
             GoodWon = Content.Load<Texture2D>("Images/goodwon");
             BadWon = Content.Load<Texture2D>("Images/badwon");
             Mail = Content.Load<Texture2D>("Images/mail");
+            titleLogo = Content.Load<Texture2D>("Images/title");
 
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
@@ -470,7 +477,7 @@ namespace LinuxTesting
                     firesound1Instance.Play();
                 }
 
-                //// Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
+                // Check if the ball is out of the arena and check the number of lives left and decrease them if necessary - Connor
                 //if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
                 //{
                 //   LeftArena = true;
@@ -540,6 +547,41 @@ namespace LinuxTesting
                 //            ResetGame();
                 //        }
                 //}
+
+                if (SpritePOS1.X > (GraphicsDevice.Viewport.Width - SpriteWidth - 40) || SpritePOS1.X < 40 || SpritePOS1.Y > (GraphicsDevice.Viewport.Height - SpriteHeight - 40) || SpritePOS1.Y < 40)
+                {
+                    LeftArena = true;
+
+                    while (LeftArena)
+                    {
+                        if (Lives == 0)
+                        {
+                            gameplaymusicInstance.Stop();
+                            lifelostInstance.Play();
+                            Console.WriteLine("You have no lives left.");
+                            Thread.Sleep(1600);
+                            gameStates = GameStates.StartMenu;
+                            LeftArena = false;
+                            break;
+                        }
+                        else if ((Lives > 0) && (Lives <= 2))
+                        {
+                            Lives--;
+                            gameplaymusicInstance.Pause();
+                            lifelostInstance.Play();
+                            Thread.Sleep(1500);
+                            gameplaymusicInstance.Resume();
+
+                            Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
+                            LeftArena = false;
+                        }
+
+                        if (LeftArena == false)
+                        {
+                            ResetGame();
+                        }
+                    }
+                }
 
 
 
@@ -623,7 +665,7 @@ namespace LinuxTesting
                             gameplaymusicInstance.Resume();
 
                             //Lives2--;
-                            //lifelost.Play();
+                            lifelost.Play();
                             
                             Console.WriteLine("You lost a life, you have " + Lives2 + " lives left");
                             LeftArena = false;
@@ -918,6 +960,7 @@ namespace LinuxTesting
 
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
+                spriteBatch.Draw(titleLogo, titleLogoPOS, Color.White);
 
             }
 
@@ -948,13 +991,13 @@ namespace LinuxTesting
                     spriteBatch.Draw(arm2.sprite, arm2.position, null, Color.White, arm2.rotation, arm2.center, 1.0f, flip2, 0);
                 }
                 //spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                if (Lives == 3)
+                if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
                     spriteBatch.Draw(LivesSprite3, LiveSprite3POS, Color.White);
                 }
-                else if (Lives == 2)
+                else if (Lives == 1)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
@@ -962,13 +1005,13 @@ namespace LinuxTesting
                 else
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
 
-                if (Lives2 == 3)
+                if (Lives2 == 2)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
                     spriteBatch.Draw(Lives2Sprite3, Live2Sprite3POS, Color.White);
                 }
-                else if (Lives2 == 2)
+                else if (Lives2 == 1)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
@@ -1013,11 +1056,13 @@ namespace LinuxTesting
             if (gameStates == GameStates.BadPixieWin)
             {
                 spriteBatch.Draw(BadWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.Draw(MainMenu, MainMenuPOS, Color.White);
             }
 
             if (gameStates == GameStates.GoodPixieWin)
             {
                 spriteBatch.Draw(GoodWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.Draw(MainMenu, MainMenuPOS, Color.White);
             }
             //spriteBatch.Draw(Pixie, SpritePOS, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             spriteBatch.End();
@@ -1034,15 +1079,15 @@ namespace LinuxTesting
             PauseButton = Content.Load<Texture2D>("Images/123");
             ResumeButton = Content.Load<Texture2D>("Images/1234");
             ResumeButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - (ResumeButton.Width / 2), (GraphicsDevice.Viewport.Height / 2) - (ResumeButton.Height / 2));
-            SpritePOS1 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
-            SpritePOS2 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
+            SpritePOS1 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2) + 400);
+            SpritePOS2 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2) - 400);
             FPSOnButton = Content.Load<Texture2D>("Images/Orb");
 
             // Testing load screen don't leave this command in on launch - Matthew
             //Thread.Sleep(3000);
 
-            Lives = 3;
-            Lives2 = 3;
+            Lives = 2;
+            Lives2 = 2;
 
             gameStates = GameStates.Playing;
             isLoading = false;
@@ -1053,8 +1098,8 @@ namespace LinuxTesting
         /// </summary>
         void ResetGame()
         {
-            SpritePOS1 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
-            SpritePOS2 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2));
+            SpritePOS1 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2) + 400);
+            SpritePOS2 = new Vector2((GraphicsDevice.Viewport.Width / 2) - (SpriteWidth / 2), (GraphicsDevice.Viewport.Height / 2) - (SpriteHeight / 2) - 400);
         }
         /// <summary>
         /// This variable is for recognising where the mouse is clicking
@@ -1095,7 +1140,7 @@ namespace LinuxTesting
                 }
             }
             //Resume Button
-            if (gameStates == GameStates.Paused)
+            if (gameStates == GameStates.Paused || gameStates == GameStates.GoodPixieWin || gameStates == GameStates.BadPixieWin)
             {
                 Rectangle MainMenuRect = new Rectangle((int)MainMenuPOS.X, (int)MainMenuPOS.Y, 100, 20);
                 Rectangle ResumeButtonRect = new Rectangle((int)ResumeButtonPOS.X, (int)ResumeButtonPOS.Y, 100, 20);
