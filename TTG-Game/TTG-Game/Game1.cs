@@ -62,7 +62,6 @@ namespace LinuxTesting
         private Texture2D LoadingScreen;
         private Texture2D FPSOnButton;
         private Texture2D Background;
-        private Texture2D titleLogo;
 
         // Sound Instance
         SoundEffect menumusic;
@@ -96,7 +95,7 @@ namespace LinuxTesting
         private Vector2 Live2Sprite3POS;
         private Vector2 MailPOS;
         private Rectangle Meow;
-        private Vector2 titleLogoPOS;
+        private Vector2 BadWonPOS;
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -189,7 +188,6 @@ namespace LinuxTesting
 
             StartButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 400);
             ExitButtonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -508, 450);
-            titleLogoPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - -400, 240);
 
             gameStates = GameStates.StartMenu;
 
@@ -228,7 +226,6 @@ namespace LinuxTesting
             GoodWon = Content.Load<Texture2D>("Images/goodwon");
             BadWon = Content.Load<Texture2D>("Images/badwon");
             Mail = Content.Load<Texture2D>("Images/mail");
-            titleLogo = Content.Load<Texture2D>("Images/title");
 
             // Load content for the guns
             arm = new GameObject(Content.Load<Texture2D>("Images/gun"));
@@ -236,12 +233,12 @@ namespace LinuxTesting
             bullets = new GameObject[1];
             for (int i = 0; i < 1; i++)
             {
-                bullets[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
+                bullets[i] = new GameObject(Content.Load<Texture2D>("Images/mail"));
             }
             bullets2 = new GameObject[1];
             for (int i = 0; i < 1; i++ )
             {
-                bullets2[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
+                bullets2[i] = new GameObject(Content.Load<Texture2D>("Images/mail"));
             }
 
                 lifelost = Content.Load<SoundEffect>("Sound/lifelost");
@@ -668,9 +665,17 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.BadPixieWin)
             {
+                BadWonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 0, 0);
                 spriteBatch.Begin();
                 spriteBatch.Draw(BadWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                 spriteBatch.End();
+            }
+            else if (gameStates == GameStates.GoodPixieWin)
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(GoodWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.End();
+
             }
 
             base.Update(gameTime);
@@ -739,8 +744,13 @@ namespace LinuxTesting
 
                         if (Lives2 == 0)
                         {
-                            Thread.Sleep(1000);
-                            gameStates = GameStates.StartMenu;
+                            GoodPixieWin = true;
+                            if (Lives2 == 0 && GoodPixieWin == true)
+                            {
+                                gameStates = GameStates.GoodPixieWin;
+                                gameplaymusicInstance.Stop();
+                                victorypixie1soundInstance.Play();
+                            }
                         }
                     }
                     //}
@@ -803,6 +813,11 @@ namespace LinuxTesting
                         if (Lives == 0)
                         {
                             BadPixieWin = true;
+                        }
+
+                        if (Lives2 == 0)
+                        {
+                            GoodPixieWin = true;
                         }
 
                         if (Lives == 0 && BadPixieWin == true)
@@ -902,7 +917,6 @@ namespace LinuxTesting
 
                 spriteBatch.Draw(StartButton, StartButtonPOS, Color.White);
                 spriteBatch.Draw(ExitButton, ExitButtonPOS, Color.White);
-                spriteBatch.Draw(titleLogo, titleLogoPOS, Color.White);
 
             }
 
