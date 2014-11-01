@@ -95,6 +95,7 @@ namespace LinuxTesting
         private Vector2 Live2Sprite3POS;
         private Vector2 MailPOS;
         private Rectangle Meow;
+        private Vector2 BadWonPOS;
 
         //Sprite Stuff - Matthew
         private const float SpriteWidth = 50f;
@@ -232,12 +233,12 @@ namespace LinuxTesting
             bullets = new GameObject[1];
             for (int i = 0; i < 1; i++)
             {
-                bullets[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
+                bullets[i] = new GameObject(Content.Load<Texture2D>("Images/mail"));
             }
             bullets2 = new GameObject[1];
             for (int i = 0; i < 1; i++ )
             {
-                bullets2[i] = new GameObject(Content.Load<Texture2D>("Images/bullet"));
+                bullets2[i] = new GameObject(Content.Load<Texture2D>("Images/mail"));
             }
 
                 lifelost = Content.Load<SoundEffect>("Sound/lifelost");
@@ -664,6 +665,7 @@ namespace LinuxTesting
 
             if (gameStates == GameStates.BadPixieWin)
             {
+                BadWonPOS = new Vector2((GraphicsDevice.Viewport.Width / 2) - 0, 0);
                 spriteBatch.Begin();
                 spriteBatch.Draw(BadWon, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
                 spriteBatch.End();
