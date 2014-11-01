@@ -394,12 +394,10 @@ namespace LinuxTesting
                 
                 if (state.IsKeyDown(Keys.RightShift))
                 {
-                    gameplaymusicInstance.Stop();
                     victorypixie1soundInstance.Play();
                 }
                 if (state.IsKeyDown(Keys.LeftShift))
-                {
-                    gameplaymusicInstance.Stop();
+                {                  
                     victorypixie2soundInstance.Play();
                 }
 
@@ -428,7 +426,7 @@ namespace LinuxTesting
                         else if ((Lives > 0) && (Lives <= 2))
                         {
                             Lives--;
-                            lifelost.Play();
+                            lifelostInstance.Play();
                            
                                 gameplaymusicInstance.Pause();
                                 lifelostInstance.Play();
@@ -520,7 +518,7 @@ namespace LinuxTesting
                         {
                             Lives2--;
                             gameplaymusicInstance.Pause();
-                            lifelost.Play();                            
+                            lifelostInstance.Play();                            
                             Thread.Sleep(1500);
                             gameplaymusicInstance.Resume();
 
