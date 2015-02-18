@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
-namespace LinuxTesting
+namespace PixieTag
 {
     class GameObject
     {
