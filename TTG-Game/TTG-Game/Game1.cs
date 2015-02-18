@@ -785,17 +785,28 @@ namespace LinuxTesting
                         Console.WriteLine(Lives2);
                         Lives2--;
 
+                        // Connor's new shit.
+                        if (Lives2 == 0)
+                        {
+                            GoodPixieWin = true;
+                            gameStates = GameStates.GoodPixieWin;
+                            gameplaymusicInstance.Stop();
+                            victorypixie1soundInstance.Play();
+                        }
+
+                        /* Richie's old shit.
                         if (Lives2 == 0)
                         {
                             GoodPixieWin = true;
                         }
-                            
+                        // This if is pointless. God damn it, Richie.
                         if (Lives2 == 0 && GoodPixieWin == true)
                             {
                                 gameStates = GameStates.GoodPixieWin;
                                 gameplaymusicInstance.Stop();
                                 victorypixie1soundInstance.Play();
                             }
+                         */
                         }
                     }
                 }
@@ -853,23 +864,29 @@ namespace LinuxTesting
                         lifelostInstance.Play();
                         Console.WriteLine(Lives);
                         Lives--;
+                        
+                        // God damn it, Richie. Again, a pointless if.
                         if (Lives == 0)
                         {
                             BadPixieWin = true;
+                            // Let me make this a little more simpler for you. I left in the BadPixieWin just in case it's used elsewhere.
+                            gameStates = GameStates.BadPixieWin;
+                            gameplaymusicInstance.Stop();
+                            victorypixie2soundInstance.Play();
                         }
 
                         if (Lives2 == 0)
                         {
                             GoodPixieWin = true;
                         }
-
+                        /* Now obselete by my changes.
                         if (Lives == 0 && BadPixieWin == true)
                         {
                             gameStates = GameStates.BadPixieWin;
                             gameplaymusicInstance.Stop();
                             victorypixie2soundInstance.Play();
- 
                         }
+                        */
 
                     }
                 }
@@ -991,13 +1008,13 @@ namespace LinuxTesting
                     spriteBatch.Draw(arm2.sprite, arm2.position, null, Color.White, arm2.rotation, arm2.center, 1.0f, flip2, 0);
                 }
                 //spriteBatch.Draw(Pixie1, SpritePOS1, new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-                if (Lives == 3)
+                if (Lives == 2)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
                     spriteBatch.Draw(LivesSprite3, LiveSprite3POS, Color.White);
                 }
-                else if (Lives == 2)
+                else if (Lives == 1)
                 {
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
                     spriteBatch.Draw(LivesSprite2, LiveSprite2POS, Color.White);
@@ -1005,13 +1022,13 @@ namespace LinuxTesting
                 else
                     spriteBatch.Draw(LivesSprite, LiveSpritePOS, Color.White);
 
-                if (Lives2 == 3)
+                if (Lives2 == 2)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
                     spriteBatch.Draw(Lives2Sprite3, Live2Sprite3POS, Color.White);
                 }
-                else if (Lives2 == 2)
+                else if (Lives2 == 1)
                 {
                     spriteBatch.Draw(Lives2Sprite, Live2SpritePOS, Color.White);
                     spriteBatch.Draw(Lives2Sprite2, Live2Sprite2POS, Color.White);
@@ -1086,8 +1103,8 @@ namespace LinuxTesting
             // Testing load screen don't leave this command in on launch - Matthew
             //Thread.Sleep(3000);
 
-            Lives = 3;
-            Lives2 = 3;
+            Lives = 2;
+            Lives2 = 2;
 
             gameStates = GameStates.Playing;
             isLoading = false;
